@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b1goop5vjdfdi"]
+
+[ext_resource type="Texture2D" uid="uid://cu7xcdmr5sbdv" path="res://Utility/Art/white_tile.png" id="1_4flbx"]
+[ext_resource type="Script" uid="uid://bgpf025cw87lh" path="res://actor.gd" id="1_oka2p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4flbx"]
+size = Vector2(14, 14)
+
+[node name="Actor" type="CharacterBody2D" unique_id=859342895]
+script = ExtResource("1_oka2p")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=275471011]
+self_modulate = Color(0.8627451, 0.078431375, 0.23529412, 1)
+texture = ExtResource("1_4flbx")
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=335709547]
+position = Vector2(8, 8)
+shape = SubResource("RectangleShape2D_4flbx")
+
+[node name="InputDelay" type="Timer" parent="." unique_id=384397599]
+wait_time = 0.1
+one_shot = true

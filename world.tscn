@@ -1,0 +1,69 @@
+[gd_scene format=4 uid="uid://b3bjb1jqmrhh1"]
+
+[ext_resource type="Script" uid="uid://dneinynmcruxc" path="res://Utility/GridCursor/grid_cursor.gd" id="1_dwbse"]
+[ext_resource type="Texture2D" uid="uid://cu5v37sawiv14" path="res://Art/main.png" id="1_fj7yv"]
+[ext_resource type="PackedScene" uid="uid://b1goop5vjdfdi" path="res://actor.tscn" id="2_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://cp0q3txpypsoi" path="res://Art/arrow.png" id="4_aqk2v"]
+[ext_resource type="Script" uid="uid://dnv0ia8t0r4np" path="res://arrow_path.gd" id="5_036b0"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aqk2v"]
+texture = ExtResource("1_fj7yv")
+0:0/0 = 0
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_036b0"]
+sources/0 = SubResource("TileSetAtlasSource_aqk2v")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_036b0"]
+texture = ExtResource("4_aqk2v")
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_dwbse"]
+sources/0 = SubResource("TileSetAtlasSource_036b0")
+
+[node name="World" type="Node2D" unique_id=1439777801]
+script = ExtResource("1_dwbse")
+
+[node name="Background" type="ColorRect" parent="." unique_id=539721109]
+custom_minimum_size = Vector2(320, 180)
+offset_right = 256.0
+offset_bottom = 128.0
+color = Color(0, 0, 0, 1)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1255840572]
+tile_map_data = PackedByteArray("AAAEAAkAAAAAAAAAAAAFAAkAAAAAAAAAAAAGAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAJAAgAAAAAAAAAAAAKAAgAAAAAAAAAAAALAAgAAAAAAAAAAAAMAAgAAAAAAAAAAAANAAgAAAAAAAAAAAAEAAoAAAABAAAAAAAFAAoAAAABAAAAAAAGAAoAAAABAAAAAAAHAAoAAAABAAAAAAAIAAoAAAABAAAAAAAJAAoAAAABAAAAAAAJAAkAAAABAAAAAAAKAAkAAAABAAAAAAANAAkAAAABAAAAAAAOAAkAAAABAAAAAAAOAAoAAAABAAAAAAAPAAoAAAABAAAAAAAQAAoAAAABAAAAAAAHAAAAAAABAAAAAAAIAAAAAAABAAAAAAAIAAEAAAABAAAAAAAJAAIAAAABAAAAAAAKAAMAAAABAAAAAAALAAMAAAABAAAAAAAMAAMAAAABAAAAAAANAAMAAAABAAAAAAAOAAIAAAABAAAAAAAPAAEAAAABAAAAAAAQAAAAAAABAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAACAAUAAAAAAAAAAAACAAYAAAAAAAAAAAACAAcAAAAAAAAAAAABAAcAAAAAAAAAAAADAAoAAAAAAAAAAAAJAAEAAAAAAAAAAAAKAAEAAAAAAAAAAAAKAAIAAAAAAAAAAAALAAIAAAAAAAAAAAAMAAIAAAAAAAAAAAANAAIAAAAAAAAAAAANAAEAAAAAAAAAAAAMAAEAAAAAAAAAAAALAAEAAAAAAAAAAAALAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAOAAEAAAAAAAAAAAAJAAAAAAAAAAAAAAALAAkAAAAAAAAAAAALAAoAAAAAAAAAAAAKAAoAAAAAAAAAAAAMAAoAAAAAAAAAAAAMAAkAAAAAAAAAAAANAAoAAAAAAAAAAAATAAkAAAABAAAAAAATAAgAAAABAAAAAAATAAcAAAABAAAAAAATAAYAAAABAAAAAAA=")
+tile_set = SubResource("TileSet_036b0")
+
+[node name="Actors" type="Node2D" parent="TileMapLayer" unique_id=1978748137]
+
+[node name="ActorPlayer" parent="TileMapLayer/Actors" unique_id=873542478 instance=ExtResource("2_tlwt5")]
+position = Vector2(32, 16)
+is_friendly = true
+movement_range = 7
+
+[node name="ActorPlayer2" parent="TileMapLayer/Actors" unique_id=384323821 instance=ExtResource("2_tlwt5")]
+position = Vector2(80, 80)
+is_friendly = true
+movement_range = 7
+
+[node name="ActorPlayer3" parent="TileMapLayer/Actors" unique_id=1813951402 instance=ExtResource("2_tlwt5")]
+position = Vector2(48, 48)
+is_friendly = true
+movement_range = 7
+
+[node name="ActorEnemy" parent="TileMapLayer/Actors" unique_id=1255173965 instance=ExtResource("2_tlwt5")]
+position = Vector2(224, 112)
+movement_range = 7
+
+[node name="ActorEnemy2" parent="TileMapLayer/Actors" unique_id=2112605976 instance=ExtResource("2_tlwt5")]
+position = Vector2(272, 96)
+movement_range = 7
+
+[node name="ActorEnemy3" parent="TileMapLayer/Actors" unique_id=1071938263 instance=ExtResource("2_tlwt5")]
+position = Vector2(272, 64)
+movement_range = 7
+
+[node name="ArrowPath" type="TileMapLayer" parent="TileMapLayer" unique_id=1126001793]
+modulate = Color(1, 1, 1, 0.39215687)
+tile_set = SubResource("TileSet_dwbse")
+script = ExtResource("5_036b0")
