@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://dxnjsraj862ns"]
+
+[ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_qqpkv"]
+
+[resource]
+script = ExtResource("1_qqpkv")
+max_hp = 15
+move_range = 1
+metadata/_custom_type_script = "uid://xam200ljteac"

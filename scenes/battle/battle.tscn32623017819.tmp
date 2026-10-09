@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cvgj3gckjmq54"]
+
+[ext_resource type="Script" uid="uid://cbr1464yewt3g" path="res://Scenes/battle/battle.gd" id="1_b7c46"]
+
+[node name="Battle" type="Node2D" unique_id=2109116592]
+script = ExtResource("1_b7c46")
+
+[node name="Entities" type="Node2D" parent="." unique_id=1333722933]
+
+[node name="Cursor" type="Node2D" parent="." unique_id=583861663]

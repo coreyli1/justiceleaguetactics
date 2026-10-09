@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://8lg4kyjvkws4"]
+
+[ext_resource type="Script" uid="uid://dxo3svygg5j5j" path="res://scripts/units/unit.gd" id="1_102ea"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vu74k"]
+size = Vector2(16, 16)
+
+[node name="Unit" type="Node2D" unique_id=1992737311]
+script = ExtResource("1_102ea")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=590454320]
+texture = SubResource("PlaceholderTexture2D_vu74k")
+centered = false
