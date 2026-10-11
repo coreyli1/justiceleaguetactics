@@ -20,10 +20,10 @@ var turn_manager: TurnManager
 var is_over := false
 
 var _next_entity_id := 0
+@onready var player: Node = $PlayerController
 
 @onready var board: Board = $Board
 @onready var entities: Node2D = $Entities
-@onready var player: PlayerController = $PlayerController
 @onready var action_menu: ActionMenu = $UI/ActionMenu
 @onready var result_label: Label = $UI/ResultLabel
 
@@ -59,8 +59,18 @@ func _load_level() -> void:
 	grid = Grid.new(level.get_size())
 	for cell in level.get_blocked_cells():
 		grid.set_blocked(cell, true)
+
+	var has_squad := not GameState.squad.is_empty()
 	for spawn in level.spawns:
+		if has_squad and spawn.team == Unit.Team.PLAYER:
+			continue   # the chosen squad replaces the level's test units
 		spawn_unit(spawn.unit, spawn.cell, spawn.team)
+
+	var deploy_cells := level.get_deploy_cells()
+	for i in mini(GameState.squad.size(), deploy_cells.size()):
+		var character := GameState.squad[i]
+		var unit := spawn_unit(character.data, deploy_cells[i], Unit.Team.PLAYER)
+		unit.character = character
 
 
 # --- Queries ------------------------------------------------------------------
@@ -177,3 +187,23 @@ func _run_enemy_phase() -> void:
 		await get_tree().create_timer(0.25).timeout
 
 	turn_manager.end_phase()
+
+## Sums every chosen commander's bonus and gives it to the whole squad.
+## Passive: applied once at the start, unaffected by deaths.
+func _apply_commander_bonuses() -> void:
+	var atk := 0
+	var def := 0
+	var mov := 0
+	for character in GameState.commanders:
+		var bonus := character.data.commander_bonus
+		if bonus:
+			atk += bonus.attack
+			def += bonus.defense
+			mov += bonus.move_range
+
+	for unit in units.values():
+		if unit.team == Unit.Team.PLAYER:
+			unit.bonus_attack = atk
+			unit.bonus_defense = def
+			unit.bonus_move = mov
+	print("Commander bonuses: +%d ATK, +%d DEF, +%d MOV" % [atk, def, mov])

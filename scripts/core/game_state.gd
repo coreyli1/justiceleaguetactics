@@ -9,11 +9,23 @@ const BATTLE := "res://scenes/battle/battle.tscn"
 const CATALOG: LevelCatalog = preload("res://data/levels/catalog.tres")
 const STARTING_ROSTER: RosterData = preload("res://data/roster/starting_roster.tres")
 const UNIT_SELECT := "res://scenes/menus/unit_select.tscn"
+const MAX_COMMANDERS := 2
 
 var roster: Array[CharacterState] = []   # every hero the player owns
 var squad: Array[CharacterState] = []    # the heroes picked for the next battle
+var commanders: Array[CharacterState] = []
 var current_level: LevelData
 
+func _ready() -> void:
+	new_campaign()
+
+
+func new_campaign() -> void:
+	roster.clear()
+	for hero in STARTING_ROSTER.heroes:
+		var character := CharacterState.new()
+		character.data = hero
+		roster.append(character)
 
 func start_level(level: LevelData) -> void:
 	current_level = level
@@ -39,6 +51,7 @@ func _change_scene(path: String) -> void:
 func select_level(level: LevelData) -> void:
 	current_level = level
 	squad.clear()
+	commanders.clear()
 	_change_scene(UNIT_SELECT)
 
 

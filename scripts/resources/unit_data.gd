@@ -1,7 +1,11 @@
 class_name UnitData extends Resource
 
+enum Type {HUMAN, META, ALIEN}
+
 @export var id: StringName              # stable ID for saves, e.g. &"soldier"
 @export var display_name: String = "Unit"
+@export var type: Type = Type.HUMAN
+@export var commander_bonus: CommanderBonus
 
 @export_group("Stats")
 @export var max_hp: int = 10

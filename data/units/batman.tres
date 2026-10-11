@@ -4,7 +4,8 @@
 
 [resource]
 script = ExtResource("1_lgcng")
-max_hp = 1
+id = &"2"
+display_name = "Batman"
 attack_range_min = 2
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

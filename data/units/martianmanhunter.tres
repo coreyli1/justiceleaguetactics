@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_y4usq")
+display_name = "Martian Manhunter"
 max_hp = 1
 attack_range_min = 2
 attack_range_max = 3

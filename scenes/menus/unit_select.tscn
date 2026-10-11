@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://badhgah7poevv"]
+
+[ext_resource type="Script" uid="uid://dyypou4dvpiem" path="res://scripts/ui/unit_select.gd" id="1_gf0ug"]
+
+[node name="UnitSelect" type="Control" unique_id=1437547286]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gf0ug")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=2124232724]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+alignment = 1
+
+[node name="Title" type="Label" parent="VBox" unique_id=38091606]
+layout_mode = 2
+text = "Select Your Heroes"
+
+[node name="HeroList" type="GridContainer" parent="VBox" unique_id=817259867]
+layout_mode = 2
+columns = 2
+
+[node name="Title" type="Label" parent="VBox/HeroList" unique_id=496939251]
+layout_mode = 2
+text = "Justice League Tactics"
+
+[node name="Count" type="Label" parent="VBox" unique_id=1407740750]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="VBox" unique_id=1037672142]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="VBox/Buttons" unique_id=745905694]
+layout_mode = 2
+text = "Back"
+
+[node name="Start" type="Button" parent="VBox/Buttons" unique_id=1545279033]
+layout_mode = 2
+text = "Start"

@@ -16,7 +16,7 @@ class Hit:
 
 
 static func calculate_damage(attacker: Unit, defender: Unit) -> int:
-	return maxi(1, attacker.data.attack - defender.data.defense)
+	return maxi(1, attacker.attack - defender.defense)
 
 
 static func in_range(unit: Unit, from: Vector2i, to: Vector2i) -> bool:

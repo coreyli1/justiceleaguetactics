@@ -6,10 +6,25 @@ var data: UnitData
 var team: Team
 var hp: int
 var has_acted: bool
+var character: CharacterState
+
+var bonus_attack := 0
+var bonus_defense := 0
+var bonus_move := 0
+
+var attack: int:
+	get:
+		return data.attack + bonus_attack
+
+var defense: int:
+	get:
+		return data.defense + bonus_defense
 
 var move_range: int:
 	get:
-		return data.move_range   # TODO: later, buffs/terrain modify this
+		return data.move_range + bonus_move
+
+
 
 func setup(p_data: UnitData, p_team: Team) -> void:
 	data = p_data

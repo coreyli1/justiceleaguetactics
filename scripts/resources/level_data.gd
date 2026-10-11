@@ -28,3 +28,13 @@ func get_blocked_cells() -> Array[Vector2i]:
 			if rows[y][x] == "#":
 				blocked.append(Vector2i(x, y))
 	return blocked
+	
+
+func get_deploy_cells() -> Array[Vector2i]:
+	var deploy: Array[Vector2i] = []
+	var rows := get_rows()
+	for y in rows.size():
+		for x in rows[y].length():
+			if rows[y][x] == "P":
+				deploy.append(Vector2i(x, y))
+	return deploy

@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_da0kn")
+display_name = "Hawkgirl"
 max_hp = 1
 attack_range_min = 2
 attack_range_max = 3
