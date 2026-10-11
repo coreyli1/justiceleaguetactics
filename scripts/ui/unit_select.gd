@@ -17,7 +17,7 @@ func _ready() -> void:
 	if GameState.current_level == null and not GameState.CATALOG.levels.is_empty():
 		GameState.current_level = GameState.CATALOG.levels.front()
 
-	_max_squad = GameState.current_level.get_deploy_cells().size()
+	_max_squad = GameState.current_level.get_deploy_cells()
 
 	for character in GameState.roster:
 		if not character.alive:

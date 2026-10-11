@@ -3,6 +3,7 @@ class_name LevelData extends Resource
 
 @export var id: StringName              # stable ID for saves, e.g. &"level_01"
 @export var display_name: String = "Untitled"
+@export var map: PackedScene
 
 @export_multiline var layout: String    # '#' = wall, '.' = floor
 @export var spawns: Array[UnitSpawn] = []
@@ -30,11 +31,10 @@ func get_blocked_cells() -> Array[Vector2i]:
 	return blocked
 	
 
-func get_deploy_cells() -> Array[Vector2i]:
-	var deploy: Array[Vector2i] = []
-	var rows := get_rows()
-	for y in rows.size():
-		for x in rows[y].length():
-			if rows[y][x] == "P":
-				deploy.append(Vector2i(x, y))
-	return deploy
+## Unit select needs the squad limit before the battle exists,
+## so build the map briefly, count its slots, and throw it away.
+func get_deploy_count() -> int:
+	var level_map: LevelMap = map.instantiate()
+	var count := level_map.get_deploy_cells().size()
+	level_map.free()
+	return count

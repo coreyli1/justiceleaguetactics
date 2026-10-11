@@ -28,7 +28,7 @@ var _next_entity_id := 0
 @onready var result_label: Label = $UI/ResultLabel
 
 @export var level: LevelData
-
+var level_map: LevelMap
 
 func _ready() -> void:
 	if GameState.current_level:
@@ -56,21 +56,26 @@ func _unhandled_input(event: InputEvent) -> void:
 		GameState.go_to_level_select()
 
 func _load_level() -> void:
-	grid = Grid.new(level.get_size())
-	for cell in level.get_blocked_cells():
+	level_map = level.map.instantiate()
+	add_child(level_map)
+	move_child(level_map, 0)   # first child = drawn first, under highlights and units
+
+	grid = Grid.new(level_map.get_size())
+	for cell in level_map.get_blocked_cells():
 		grid.set_blocked(cell, true)
 
-	var has_squad := not GameState.squad.is_empty()
-	for spawn in level.spawns:
-		if has_squad and spawn.team == Unit.Team.PLAYER:
-			continue   # the chosen squad replaces the level's test units
-		spawn_unit(spawn.unit, spawn.cell, spawn.team)
+	for spawn in level_map.get_enemy_spawns():
+		spawn_unit(spawn.unit, level_map.cell_of(spawn), Unit.Team.ENEMY)
 
-	var deploy_cells := level.get_deploy_cells()
-	for i in mini(GameState.squad.size(), deploy_cells.size()):
-		var character := GameState.squad[i]
-		var unit := spawn_unit(character.data, deploy_cells[i], Unit.Team.PLAYER)
-		unit.character = character
+	# F6 testing with no squad picked: just bring the first few heroes.
+	var deploy_cells := level_map.get_deploy_cells()
+	var squad := GameState.squad
+	if squad.is_empty():
+		squad = GameState.roster.slice(0, deploy_cells.size())
+
+	for i in mini(squad.size(), deploy_cells.size()):
+		var unit := spawn_unit(squad[i].data, deploy_cells[i], Unit.Team.PLAYER)
+		unit.character = squad[i]
 
 
 # --- Queries ------------------------------------------------------------------

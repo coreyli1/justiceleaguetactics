@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://ccf43kkdsnayc"]
+
+[ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="2_rnnug"]
+
+[resource]
+script = ExtResource("2_rnnug")
+id = &"11"
+display_name = "Imperium"
+type = 2
+attack_range_min = 2
+attack_range_max = 3
+metadata/_custom_type_script = "uid://xam200ljteac"
