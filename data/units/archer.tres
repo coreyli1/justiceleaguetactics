@@ -4,6 +4,9 @@
 
 [resource]
 script = ExtResource("1_2754n")
+id = &"1"
+display_name = "Superman"
+max_hp = 1
 attack_range_min = 2
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

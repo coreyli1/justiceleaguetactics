@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cvgmgujnu1vvl"
-path="res://.godot/imported/hawkgirl.png-b1fc469c826f506f47b5cfc0fc403b55.ctex"
+path="res://.godot/imported/hawkgirl.png-81944c128269592058adf4a02925c832.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/hawkgirl.png"
-dest_files=["res://.godot/imported/hawkgirl.png-b1fc469c826f506f47b5cfc0fc403b55.ctex"]
+source_file="res://art/hawkgirl.png"
+dest_files=["res://.godot/imported/hawkgirl.png-81944c128269592058adf4a02925c832.ctex"]
 
 [params]
 

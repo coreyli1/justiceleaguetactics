@@ -1,0 +1,45 @@
+[gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://cjs77ckw24hgw"]
+
+[ext_resource type="Script" uid="uid://dbc6wkq4800fo" path="res://scripts/resources/level_data.gd" id="1_djbcj"]
+[ext_resource type="Script" uid="uid://cphuttcbrbnux" path="res://scripts/resources/unit_spawn.gd" id="2_1o378"]
+[ext_resource type="Resource" uid="uid://bbs8rpydpfq5f" path="res://data/units/archer.tres" id="3_yjel3"]
+[ext_resource type="Resource" uid="uid://d13oitsfjv4w0" path="res://data/units/soldier.tres" id="4_w7r5o"]
+[ext_resource type="Resource" uid="uid://dxnjsraj862ns" path="res://data/units/brute.tres" id="5_h16w8"]
+
+[sub_resource type="Resource" id="Resource_iaac5"]
+script = ExtResource("2_1o378")
+unit = ExtResource("3_yjel3")
+cell = Vector2i(7, 8)
+team = 0
+metadata/_custom_type_script = "uid://cphuttcbrbnux"
+
+[sub_resource type="Resource" id="Resource_agr1h"]
+script = ExtResource("2_1o378")
+unit = ExtResource("4_w7r5o")
+cell = Vector2i(1, 2)
+team = 0
+metadata/_custom_type_script = "uid://cphuttcbrbnux"
+
+[sub_resource type="Resource" id="Resource_tsl2p"]
+script = ExtResource("2_1o378")
+unit = ExtResource("5_h16w8")
+cell = Vector2i(16, 2)
+metadata/_custom_type_script = "uid://cphuttcbrbnux"
+
+[resource]
+script = ExtResource("1_djbcj")
+id = &"level_test"
+display_name = "Testing Grounds"
+layout = "....................
+....................
+....................
+....................
+....................
+#########...........
+....................
+....................
+....................
+....................
+...................."
+spawns = Array[ExtResource("2_1o378")]([SubResource("Resource_iaac5"), SubResource("Resource_agr1h"), SubResource("Resource_tsl2p")])
+metadata/_custom_type_script = "uid://dbc6wkq4800fo"

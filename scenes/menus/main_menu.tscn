@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://4l4ri8lte1lv"]
+
+[ext_resource type="Script" uid="uid://fpldyr1fnvt6" path="res://scripts/ui/main_menu.gd" id="1_xqga4"]
+
+[node name="MainMenu" type="Control" unique_id=1993158886]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xqga4")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1647632745]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+alignment = 1
+
+[node name="Title" type="Label" parent="VBox" unique_id=1796982249]
+layout_mode = 2
+text = "Justice League Tactics"
+
+[node name="Play" type="Button" parent="VBox" unique_id=152959704]
+layout_mode = 2
+text = "Play"
+
+[node name="Quit" type="Button" parent="VBox" unique_id=666542079]
+layout_mode = 2
+text = "Quit"

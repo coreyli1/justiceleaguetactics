@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cpdw4raonrqce"]
+
+[ext_resource type="Script" uid="uid://k0i4s25mi32f" path="res://scripts/ui/pause_menu.gd" id="1_fwndu"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1969328940]
+layer = 10
+script = ExtResource("1_fwndu")
+
+[node name="Root" type="Control" parent="." unique_id=175038400]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="Root" unique_id=675662797]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBox" type="VBoxContainer" parent="Root" unique_id=645540592]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Resume" type="Button" parent="Root/VBox" unique_id=1796004379]
+layout_mode = 2
+text = "Resume"
+
+[node name="Restart" type="Button" parent="Root/VBox" unique_id=1354081126]
+layout_mode = 2
+text = "Restart"
+
+[node name="Quit" type="Button" parent="Root/VBox" unique_id=1666613033]
+layout_mode = 2
+text = "Quit to Level Select"

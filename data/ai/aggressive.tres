@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AIBehavior" format=3 uid="uid://dgfh3umkssfe4"]
+
+[ext_resource type="Script" uid="uid://5ivyv2tfose" path="res://scripts/ai/ai_behavior.gd" id="1_xg8j5"]
+
+[resource]
+script = ExtResource("1_xg8j5")
+metadata/_custom_type_script = "uid://5ivyv2tfose"

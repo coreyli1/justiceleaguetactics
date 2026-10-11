@@ -111,3 +111,22 @@ func get_cells_in_range(origin: Vector2i, min_range: int, max_range: int) -> Arr
 			cells.append(c)
 
 	return cells
+
+## Walking distance from the nearest source cell to every cell reachable from it.
+## Respects walls, ignores units. Cells that can't be reached are absent.
+func distance_map(sources: Array[Vector2i]) -> Dictionary:
+	var dist := {}
+	var frontier: Array[Vector2i] = []
+	for source in sources:
+		dist[source] = 0
+		frontier.append(source)
+
+	while not frontier.is_empty():
+		var current: Vector2i = frontier.pop_front()
+		for dir in DIRECTIONS:
+			var next := current + dir
+			if dist.has(next) or is_blocked(next):
+				continue
+			dist[next] = dist[current] + 1
+			frontier.append(next)
+	return dist

@@ -4,5 +4,6 @@
 
 [resource]
 script = ExtResource("1_227rg")
+max_hp = 1
 move_range = 4
 metadata/_custom_type_script = "uid://xam200ljteac"

@@ -1,15 +1,18 @@
 [gd_scene format=3 uid="uid://cvgj3gckjmq54"]
 
 [ext_resource type="Script" uid="uid://cbr1464yewt3g" path="res://scenes/battle/battle.gd" id="1_b7c46"]
+[ext_resource type="Resource" uid="uid://cjs77ckw24hgw" path="res://data/levels/level_test.tres" id="2_h0kxc"]
 [ext_resource type="Script" uid="uid://dnj1yt6hffj2a" path="res://scenes/battle/board.gd" id="2_xd4uy"]
 [ext_resource type="Script" uid="uid://c8tmxvoaf1wop" path="res://scenes/battle/player_controller.gd" id="3_0yh6x"]
 [ext_resource type="Script" uid="uid://cvi23nphmn6lv" path="res://scripts/ui/action_menu.gd" id="4_0yh6x"]
+[ext_resource type="PackedScene" uid="uid://cpdw4raonrqce" path="res://scenes/menus/pause_menu.tscn" id="6_fh7rg"]
 
 [sub_resource type="Theme" id="Theme_7gynk"]
 default_font_size = 8
 
 [node name="Battle" type="Node2D" unique_id=2109116592]
 script = ExtResource("1_b7c46")
+level = ExtResource("2_h0kxc")
 
 [node name="Board" type="Node2D" parent="." unique_id=583861663]
 script = ExtResource("2_xd4uy")
@@ -35,7 +38,12 @@ text = "Attack"
 layout_mode = 2
 text = "Wait"
 
-[node name="ResultLabel" type="Label" parent="UI/ActionMenu" unique_id=1774370839]
+[node name="ResultLabel" type="Label" parent="UI" unique_id=1774370839]
 visible = false
-layout_mode = 2
+offset_top = 48.0
+offset_right = 40.0
+offset_bottom = 71.0
+text = "test"
 horizontal_alignment = 1
+
+[node name="PauseMenu" parent="." unique_id=1969328940 instance=ExtResource("6_fh7rg")]

@@ -25,13 +25,18 @@ var _next_entity_id := 0
 @onready var entities: Node2D = $Entities
 @onready var player: PlayerController = $PlayerController
 @onready var action_menu: ActionMenu = $UI/ActionMenu
-@onready var result_label: Label = $UI/ActionMenu/ResultLabel
+@onready var result_label: Label = $UI/ResultLabel
+
+@export var level: LevelData
 
 
 func _ready() -> void:
+	if GameState.current_level:
+		level = GameState.current_level
+	
 	result_label.hide()
-	_setup_grid()
-	_spawn_test_units()
+	print(level)
+	_load_level()
 
 	turn_manager = TurnManager.new(units)
 	turn_manager.phase_started.connect(_on_phase_started)
@@ -39,25 +44,23 @@ func _ready() -> void:
 	board.setup(grid)
 	player.setup(self, action_menu)
 	turn_manager.start_phase(Unit.Team.PLAYER)
+	
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_over and event.is_action_pressed("restart"):
-		get_tree().reload_current_scene()
+	if not is_over:
+		return
+	if event.is_action_pressed("restart"):
+		GameState.restart_level()
+	elif event.is_action_pressed("ui_accept"):
+		GameState.go_to_level_select()
 
-
-# --- Setup (temporary, until levels come from LevelData) ---------------------
-
-func _setup_grid() -> void:
-	grid = Grid.new(GRID_SIZE)
-	for cell in [Vector2i(3, 4), Vector2i(4, 4), Vector2i(5, 4)]:
+func _load_level() -> void:
+	grid = Grid.new(level.get_size())
+	for cell in level.get_blocked_cells():
 		grid.set_blocked(cell, true)
-
-
-func _spawn_test_units() -> void:
-	spawn_unit(SOLDIER, Vector2i(3, 3), Unit.Team.PLAYER)
-	spawn_unit(ARCHER, Vector2i(2, 3), Unit.Team.PLAYER)
-	spawn_unit(BRUTE, Vector2i(1, 3), Unit.Team.ENEMY)
+	for spawn in level.spawns:
+		spawn_unit(spawn.unit, spawn.cell, spawn.team)
 
 
 # --- Queries ------------------------------------------------------------------
@@ -143,13 +146,34 @@ func _get_outcome() -> Outcome:
 
 
 func _end_battle(outcome: Outcome) -> void:
+	print("battle ended: ", Outcome.keys()[outcome])
 	is_over = true
 	var headline := "Victory!" if outcome == Outcome.VICTORY else "Defeat..."
-	result_label.text = headline + "\nPress R to restart"
+	result_label.text = headline + "\nR: retry   Enter: continue"
 	result_label.show()
 	battle_ended.emit(outcome)
 
 
 func _on_phase_started(team: Unit.Team) -> void:
 	if team == Unit.Team.ENEMY:
-		turn_manager.end_phase.call_deferred()   # the AI goes here next
+		_run_enemy_phase()
+
+
+func _run_enemy_phase() -> void:
+	await get_tree().create_timer(0.4).timeout
+
+	var enemies := units.values().filter(func(u): return u.team == Unit.Team.ENEMY)
+	for unit in enemies:
+		if not units.has(unit.entity_id):
+			continue   # died earlier this phase
+		if unit.data.ai_behavior:
+			var decision: AIBehavior.Decision = unit.data.ai_behavior.decide(unit, grid, units)
+			if decision.cell != unit.cell:
+				await move_unit(unit, decision.cell)
+			if decision.target:
+				if resolve_attack(unit, decision.target):
+					return   # battle over, so don't start another turn
+		turn_manager.mark_acted(unit)
+		await get_tree().create_timer(0.25).timeout
+
+	turn_manager.end_phase()

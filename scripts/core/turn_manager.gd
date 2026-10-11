@@ -27,7 +27,7 @@ func can_act(unit: Unit) -> bool:
 func mark_acted(unit: Unit) -> void:
 	unit.has_acted = true
 	unit.update_visual()
-	if not auto_end_phase:
+	if not auto_end_phase or current_team != Unit.Team.PLAYER:
 		return
 	for u in _units.values():
 		if can_act(u):
@@ -36,11 +36,7 @@ func mark_acted(unit: Unit) -> void:
 
 func end_phase() -> void:
 	phase_ended.emit(current_team)
-	if current_team == Unit.Team.PLAYER:
-		current_team = Unit.Team.ENEMY
-	else:
+	var next_team := Unit.Team.ENEMY if current_team == Unit.Team.PLAYER else Unit.Team.PLAYER
+	if next_team == Unit.Team.PLAYER:
 		turn_number += 1
-		current_team = Unit.Team.PLAYER
-	start_phase(current_team)
-	
-	pass   # TODO: emit phase_ended, switch teams, bump turn_number when it's the player's turn again
+	start_phase(next_team)	

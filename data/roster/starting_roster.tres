@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="RosterData" format=3 uid="uid://sj4egexrpyey"]
+
+[ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_vtm4q"]
+[ext_resource type="Resource" uid="uid://ceu53t2yue5o3" path="res://data/units/batman.tres" id="2_no2dc"]
+[ext_resource type="Script" uid="uid://wsa2bq1w4tud" path="res://scripts/resources/roster_data.gd" id="2_t0mte"]
+[ext_resource type="Resource" uid="uid://dr8wagjxqlrd3" path="res://data/units/hawkgirl.tres" id="3_etc37"]
+[ext_resource type="Resource" uid="uid://ehfgf771pcmf" path="res://data/units/martianmanhunter.tres" id="4_6f8sd"]
+[ext_resource type="Resource" uid="uid://3m1bqll1x34p" path="res://data/units/superman.tres" id="5_5x4v1"]
+
+[resource]
+script = ExtResource("2_t0mte")
+heroes = Array[ExtResource("1_vtm4q")]([ExtResource("2_no2dc"), ExtResource("3_etc37"), ExtResource("4_6f8sd"), ExtResource("5_5x4v1")])
+metadata/_custom_type_script = "uid://wsa2bq1w4tud"
