@@ -1,6 +1,5 @@
 class_name Combat extends RefCounted
-## Pure combat rules. Nothing in here changes game state, so the AI can call
-## these freely to predict outcomes ("what if I attacked from that cell?").
+
 
 class Hit:
 	var attacker: Unit
@@ -24,7 +23,6 @@ static func in_range(unit: Unit, from: Vector2i, to: Vector2i) -> bool:
 	return dist >= unit.data.attack_range_min and dist <= unit.data.attack_range_max
 
 
-## Enemies `unit` could hit if it stood at `from_cell`.
 static func targets_from(unit: Unit, from_cell: Vector2i, grid: Grid, units: Dictionary) -> Array[Unit]:
 	var targets: Array[Unit] = []
 	for cell in grid.get_cells_in_range(from_cell, unit.data.attack_range_min, unit.data.attack_range_max):
@@ -34,8 +32,7 @@ static func targets_from(unit: Unit, from_cell: Vector2i, grid: Grid, units: Dic
 	return targets
 
 
-## Predicts a full exchange: the attack, plus a counter if the defender survives
-## and can reach `attacker_cell`. Changes nothing.
+
 static func resolve_attack(attacker: Unit, defender: Unit, attacker_cell: Vector2i) -> Array[Hit]:
 	var hits: Array[Hit] = []
 

@@ -1,14 +1,9 @@
 class_name LevelMap extends Node2D
-## The root of a painted level scene. It is the only script that knows how a
-## level is drawn (tile layers, spawn nodes); the battle just asks it questions.
-## Uses $ paths inside functions (not @onready) so it also works on a map
-## that was instantiated but never added to the tree, e.g. to count deploy slots.
 
 func _ready() -> void:
-	$Deploy.visible = false   # deploy markers are an editing aid, not part of the look
+	$Deploy.visible = false   
 
 
-## Grid size in cells. Paint the level starting at cell (0, 0).
 func get_size() -> Vector2i:
 	return $Terrain.get_used_rect().end
 
@@ -23,7 +18,6 @@ func get_blocked_cells() -> Array[Vector2i]:
 	return cells
 
 
-## Deploy slots in reading order (top-to-bottom, then left-to-right).
 func get_deploy_cells() -> Array[Vector2i]:
 	var cells: Array[Vector2i] = $Deploy.get_used_cells()
 	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool:

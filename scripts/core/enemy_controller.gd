@@ -1,10 +1,7 @@
 class_name EnemyController extends Node
-## Plays the enemy team's turn: asks each enemy's AIBehavior what to do, then
-## carries it out with the same Battle actions the player uses.
-## The thinking lives in AIBehavior; this is just the hands.
 
-const START_DELAY := 0.4     # pause before the first enemy acts
-const BETWEEN_UNITS := 0.25  # pause between enemies, so the player can follow along
+const START_DELAY := 0.4     
+const BETWEEN_UNITS := 0.25  
 
 var _battle: Battle
 
@@ -20,13 +17,12 @@ func _on_phase_started(team: Unit.Team) -> void:
 
 
 func _run_phase() -> void:
-	# false = timers respect pause, so enemies don't act while the game is paused.
 	await get_tree().create_timer(START_DELAY, false).timeout
 
 	var enemies := _battle.units.values().filter(func(u): return u.team == Unit.Team.ENEMY)
 	for unit in enemies:
 		if not _battle.units.has(unit.entity_id):
-			continue   # died earlier this phase
+			continue   
 		if unit.data.ai_behavior:
 			var decision: AIBehavior.Decision = unit.data.ai_behavior.decide(unit, _battle.grid, _battle.units)
 			if decision.cell != unit.cell:
@@ -34,7 +30,7 @@ func _run_phase() -> void:
 				await _battle.move_unit(unit, decision.cell)
 			if decision.target:
 				if _battle.resolve_attack(unit, decision.target):
-					return   # battle over, so don't start another turn
+					return   
 		_battle.turn_manager.mark_acted(unit)
 		await get_tree().create_timer(BETWEEN_UNITS, false).timeout
 

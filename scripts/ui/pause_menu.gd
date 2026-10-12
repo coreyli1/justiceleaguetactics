@@ -8,7 +8,6 @@ extends CanvasLayer
 
 
 func _ready() -> void:
-	# Keep running while the rest of the game is paused, or we could never unpause.
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	hide()
 

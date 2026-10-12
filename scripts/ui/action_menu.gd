@@ -1,7 +1,4 @@
 class_name ActionMenu extends VBoxContainer
-## The post-move action menu. It knows nothing about battles: it shows
-## buttons and reports which one was pressed.
-
 signal attack_chosen
 signal wait_chosen
 

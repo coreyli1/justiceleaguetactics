@@ -1,4 +1,3 @@
-# grid_entity.gd
 class_name GridEntity extends Node2D
 
 var entity_id: int

@@ -1,12 +1,9 @@
 class_name Board extends Node2D
-## Draws the highlight overlays on top of the level's painted map:
-## movement range, attack range, and the route being drawn.
-## Purely visual: it never decides anything, it only shows what it's told.
 
 const MOVE_COLOR := Color(0.3, 0.6, 1.0, 0.5)
 const ATTACK_COLOR := Color(0.842, 0.473, 0.543, 0.5)
 const PATH_COLOR := Color(1.0, 0.85, 0.3, 0.75)
-const MARK_COLOR := Color(1.0, 0.85, 0.3, 0.75)   # e.g. the hero picked up during deployment
+const MARK_COLOR := Color(1.0, 0.85, 0.3, 0.75)   
 
 var _grid: Grid
 var _move_cells: Array[Vector2i] = []
@@ -65,12 +62,11 @@ func _draw_cell(cell: Vector2i, color: Color) -> void:
 	draw_rect(Rect2(_grid.cell_to_world(cell), Vector2.ONE * Grid.CELL_SIZE), color)
 
 
-## Fills each cell on the route, with the destination drawn a bit stronger.
 func _draw_path() -> void:
 	if _path.size() < 2:
-		return   # standing still: nothing to draw
-	for i in range(0, _path.size()):   # skip index 0, the cell the unit stands on
+		return  
+	for i in range(0, _path.size()):   
 		var color := PATH_COLOR
 		if i < _path.size() - 1:
-			color.a = 0.45   # route cells: lighter
+			color.a = 0.45  
 		_draw_cell(_path[i], color)

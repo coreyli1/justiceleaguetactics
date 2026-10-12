@@ -1,28 +1,4 @@
 class_name Battle extends Node2D
-## Owns the battle's state (grid, units, turns) and the shared actions that
-## both the player and the AI use: moving, attacking, killing, ending.
-## It does NOT handle input, turns or drawing. Each phase has its own controller:
-##   DeploymentController - placing heroes before turn 1
-##   PlayerController     - the player's turns
-##   EnemyController      - the enemy's turns (AI)
-## and Board draws the highlights.
-##
-## Expected scene tree (everything directly under Battle except the UI children):
-##   Battle
-##    ├ Camera
-##    ├ Board
-##    ├ Entities            (empty in the editor; units are added here at runtime)
-##    ├ Cursor
-##    ├ DeploymentController
-##    ├ PlayerController
-##    ├ EnemyController
-##    ├ UI
-##    │   ├ ActionMenu (Attack, Wait)
-##    │   ├ ResultLabel
-##    │   ├ EndTurnButton
-##    │   └ DeploymentPanel
-##    └ PauseMenu
-## The level's map scene is added as the first child at runtime.
 
 signal battle_ended(outcome: Outcome)
 
@@ -30,12 +6,11 @@ enum Outcome { NONE, VICTORY, DEFEAT }
 
 const UNIT_SCENE := preload("res://scenes/units/unit.tscn")
 
-## Used when the battle is run directly (F6) without picking a level first.
 @export var level: LevelData
 
 var grid: Grid
 var level_map: LevelMap
-var units: Dictionary = {}   # entity_id -> Unit (living units only)
+var units: Dictionary = {}  
 var turn_manager: TurnManager
 var is_over := false
 
@@ -51,7 +26,6 @@ var _next_entity_id := 0
 @onready var action_menu: ActionMenu = $UI/ActionMenu
 @onready var result_label: Label = $UI/ResultLabel
 @onready var end_turn_button: Button = $UI/EndTurnButton
-## Optional: without a DeploymentPanel instance, heroes are auto-placed.
 @onready var deploy_panel: DeploymentPanel = get_node_or_null("UI/DeploymentPanel")
 
 
@@ -67,17 +41,15 @@ func _ready() -> void:
 
 	board.setup(grid)
 	cursor.setup(grid)
-	#cursor.moved.connect(camera.follow) allows camera to follow cursor
 	player.setup(self, action_menu, cursor, end_turn_button)
 	enemies.setup(self)
 	deployment.setup(self, cursor, deploy_panel)
 	deployment.finished.connect(start_battle)
-	deployment.begin(level_map.get_deploy_cells())   # turn 1 waits for start_battle()
+	deployment.begin(level_map.get_deploy_cells())   
 
 
-## Called when deployment is finished. Starts turn 1.
 func start_battle() -> void:
-	_apply_commander_bonuses()   # heroes exist now, so they can receive the bonuses
+	_apply_commander_bonuses()   
 	player.activate()
 	turn_manager.start_phase(Unit.Team.PLAYER)
 
@@ -96,7 +68,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _load_level() -> void:
 	level_map = level.map.instantiate()
 	add_child(level_map)
-	move_child(level_map, 0)   # first child = drawn first, under highlights and units
+	move_child(level_map, 0)   
 
 	grid = Grid.new(level_map.get_size())
 	for cell in level_map.get_blocked_cells():
@@ -104,19 +76,14 @@ func _load_level() -> void:
 
 	for spawn in level_map.get_enemy_spawns():
 		spawn_unit(spawn.unit, level_map.cell_of(spawn), Unit.Team.ENEMY)
-	# Heroes are NOT spawned here: the player places them during deployment.
 
 
-## The heroes available for this battle.
-## F6 testing with no squad picked: borrow the first few heroes from the roster.
 func get_squad() -> Array[CharacterState]:
 	if not GameState.squad.is_empty():
 		return GameState.squad
 	return GameState.roster.slice(0, level_map.get_deploy_cells().size())
 
 
-## Sums every chosen commander's bonus and gives it to the whole squad.
-## Passive: applied once at the start, unaffected by deaths.
 func _apply_commander_bonuses() -> void:
 	var atk := 0
 	var def := 0
@@ -169,43 +136,37 @@ func spawn_unit(data: UnitData, cell: Vector2i, team: Unit.Team) -> Unit:
 	return unit
 
 
-## Moves a unit along the shortest path to a cell (used by the AI). Call with await.
+
 func move_unit(unit: Unit, cell: Vector2i) -> void:
 	await move_unit_along(unit, grid.find_path(unit.cell, cell, unit.move_range))
 
 
-## Moves a unit along a specific path; the first cell is where it stands
-## (used by the player's drawn route). Call with await.
+
 func move_unit_along(unit: Unit, path: Array[Vector2i]) -> void:
 	if path.is_empty():
 		return
-	grid.move(unit.entity_id, unit.cell, path.back())   # logic first...
-	var tween := unit.move_along(path, grid)             # ...then visuals
+	grid.move(unit.entity_id, unit.cell, path.back())   
+	var tween := unit.move_along(path, grid)            
 	if tween:
 		await tween.finished
 
 
-## Deployment: puts a hero from the squad onto the map.
 func deploy_character(character: CharacterState, cell: Vector2i) -> Unit:
 	var unit := spawn_unit(character.data, cell, Unit.Team.PLAYER)
 	unit.character = character
 	return unit
 
 
-## Deployment: takes a hero off the map, back to the squad list.
 func undeploy(unit: Unit) -> void:
 	_remove_unit(unit)
 
 
-## Deployment: moves a hero to another cell, swapping with whoever stands there.
 func reposition(unit: Unit, cell: Vector2i) -> void:
 	var other := get_unit_at(cell)
 	if other == unit:
 		return
 	var from := unit.cell
 
-	# Clear both cells from the grid BEFORE placing anyone, or placing the first
-	# unit would overwrite the second one's occupancy.
 	grid.remove(from)
 	if other:
 		grid.remove(cell)
@@ -214,15 +175,10 @@ func reposition(unit: Unit, cell: Vector2i) -> void:
 	grid.place(unit.entity_id, cell)
 	unit.snap_to_cell(grid, cell)
 
-
-## Instantly puts a unit back where it was (used by the player's undo).
 func undo_move(unit: Unit, origin: Vector2i) -> void:
 	grid.move(unit.entity_id, unit.cell, origin)
 	unit.snap_to_cell(grid, origin)
 
-
-## Applies a full attack exchange (hit + possible counter).
-## Returns true if this ended the battle.
 func resolve_attack(attacker: Unit, target: Unit) -> bool:
 	var hits := Combat.resolve_attack(attacker, target, attacker.cell)
 	for hit in hits:
@@ -244,8 +200,6 @@ func _kill_unit(unit: Unit) -> void:
 	print("%s is defeated" % unit.data.display_name)
 	_remove_unit(unit)
 
-
-## Removes a unit from all three places it's registered: grid, dictionary, scene.
 func _remove_unit(unit: Unit) -> void:
 	grid.remove(unit.cell)
 	units.erase(unit.entity_id)
@@ -254,12 +208,12 @@ func _remove_unit(unit: Unit) -> void:
 
 func _get_outcome() -> Outcome:
 	var players := 0
-	var enemies := 0
+	var enemyunits := 0
 	for unit in units.values():
 		match unit.team:
 			Unit.Team.PLAYER: players += 1
-			Unit.Team.ENEMY: enemies += 1
-	if enemies == 0:
+			Unit.Team.ENEMY: enemyunits += 1
+	if enemyunits == 0:
 		return Outcome.VICTORY
 	if players == 0:
 		return Outcome.DEFEAT

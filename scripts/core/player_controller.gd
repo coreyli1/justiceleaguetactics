@@ -1,12 +1,4 @@
 class_name PlayerController extends Node
-## Plays the player's turns: select a hero, draw their route, move, then attack or wait.
-## Owns the turn state machine and asks Battle to actually do things.
-## Input arrives through the cursor's signals (moved / confirmed / cancelled);
-## deployment before turn 1 is handled by DeploymentController.
-##
-## While a unit is selected, moving the cursor draws its route (Fire Emblem style):
-## stepping to a neighbouring cell extends the path, stepping back onto it trims it,
-## and jumping (or running out of movement) falls back to the shortest route.
 
 enum State { INACTIVE, IDLE, UNIT_SELECTED, BUSY, CHOOSING_ACTION, TARGETING, DISABLED }
 
@@ -15,8 +7,6 @@ var _menu: ActionMenu
 var _cursor: GridCursor
 var _end_turn_button: Button
 
-## Every state change refreshes the End Turn button and the cursor, so neither
-## can be usable at the wrong moment.
 var _state: State = State.INACTIVE:
 	set(value):
 		_state = value
@@ -26,7 +16,7 @@ var _state: State = State.INACTIVE:
 var _selected: Unit = null
 var _move_origin: Vector2i
 var _reachable: Array[Vector2i] = []
-var _path: Array[Vector2i] = []   # the route being drawn, starting at the unit's cell
+var _path: Array[Vector2i] = []   
 var _attack_cells: Array[Vector2i] = []
 
 
@@ -44,14 +34,11 @@ func setup(battle: Battle, menu: ActionMenu, cursor: GridCursor, end_turn_button
 	_battle.battle_ended.connect(_on_battle_ended)
 	_battle.turn_manager.phase_started.connect(_on_phase_started)
 
-	# FOCUS_NONE: clicking the button must not steal keyboard focus, or the
-	# arrow keys would start navigating UI instead of moving the cursor.
 	_end_turn_button.focus_mode = Control.FOCUS_NONE
 	_end_turn_button.pressed.connect(_on_end_turn_pressed)
 	_refresh_end_turn_button()
 
 
-## Called by Battle when deployment is done and turn 1 begins.
 func activate() -> void:
 	_state = State.IDLE
 
@@ -67,8 +54,6 @@ func _on_cursor_moved(cell: Vector2i) -> void:
 	if _state == State.UNIT_SELECTED:
 		_update_path(cell)
 
-
-## What "select" does on a cell depends on the state.
 func _on_confirmed(cell: Vector2i) -> void:
 	match _state:
 		State.IDLE: _confirm_idle(cell)
@@ -92,11 +77,11 @@ func _confirm_idle(cell: Vector2i) -> void:
 
 
 func _confirm_selected(cell: Vector2i) -> void:
-	if not (cell in _reachable):   # includes the unit's own cell (act in place)
+	if not (cell in _reachable):  
 		_deselect()
 		return
 	if _path.is_empty() or _path.back() != cell:
-		_update_path(cell)   # safety net: make sure the path really ends here
+		_update_path(cell)   
 	_move_selected_along(_path.duplicate())
 
 
@@ -132,19 +117,16 @@ func _deselect() -> void:
 
 
 # --- Moving and the action menu ------------------------------------------------------
-
-## Rebuilds the drawn route so it ends at `cell`.
 func _update_path(cell: Vector2i) -> void:
 	if not (cell in _reachable):
-		return   # out of range: keep the last valid path on screen
-
+		return   
+		
 	var index := _path.find(cell)
 	if index != -1:
-		_path.resize(index + 1)   # stepped back onto the path: trim everything after
+		_path.resize(index + 1)   
 	elif _is_neighbor(_path.back(), cell) and _path.size() - 1 < _selected.move_range:
-		_path.append(cell)        # one step further, still within movement: extend
+		_path.append(cell)       
 	else:
-		# Jumped (mouse) or out of movement: fall back to the shortest route.
 		_path = _battle.grid.find_path(_selected.cell, cell, _selected.move_range)
 
 	_battle.board.show_path(_path)
@@ -172,7 +154,7 @@ func _undo_move() -> void:
 	var unit := _selected
 	_menu.close()
 	_battle.undo_move(unit, _move_origin)
-	_select(unit)   # also puts the cursor back on the unit
+	_select(unit)  
 
 
 # --- Actions ---------------------------------------------------------------------------
@@ -181,7 +163,6 @@ func _on_attack_chosen() -> void:
 	_menu.close()
 	_attack_cells = _battle.grid.get_cells_in_range(_selected.cell, _selected.data.attack_range_min, _selected.data.attack_range_max)
 	_battle.board.show_attacks(_attack_cells)
-	# Jump the cursor onto the first valid target, so keyboard players can confirm right away.
 	var targets := _battle.get_targets(_selected)
 	if not targets.is_empty():
 		_cursor.move_to(targets[0].cell)
@@ -199,8 +180,6 @@ func _on_wait_chosen() -> void:
 	_menu.close()
 	_finish_unit()
 
-
-## The single exit path for "this unit is done for the turn".
 func _finish_unit() -> void:
 	var unit := _selected
 	_deselect()
@@ -231,7 +210,7 @@ func _on_phase_started(_team: Unit.Team) -> void:
 
 func _refresh_end_turn_button() -> void:
 	if _end_turn_button == null or _battle == null:
-		return   # the setter can run before setup() finishes
+		return   
 	_end_turn_button.visible = _state != State.INACTIVE   # hidden during deployment
 	_end_turn_button.disabled = not _can_end_turn()
 

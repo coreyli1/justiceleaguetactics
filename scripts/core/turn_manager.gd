@@ -5,7 +5,7 @@ signal phase_ended(team: Unit.Team)
 
 var current_team: Unit.Team = Unit.Team.PLAYER
 var turn_number: int = 1
-var _units: Dictionary   # same dictionary battle uses: entity_id -> Unit
+var _units: Dictionary   
 var auto_end_phase: bool = false
 
 func _init(units: Dictionary) -> void:
@@ -18,7 +18,7 @@ func start_phase(team: Unit.Team) -> void:
 			unit.has_acted = false
 			unit.update_visual()
 	phase_started.emit(team)
-	pass   # TODO: set current_team, reset has_acted for that team's units, emit phase_started
+	pass   
 
 func can_act(unit: Unit) -> bool:
 	return unit.team == current_team and not unit.has_acted

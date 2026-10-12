@@ -1,7 +1,5 @@
-# scripts/core/game_state.gd
 extends Node
-## Global and always alive: holds what must survive scene changes,
-## and is the one place that switches scenes.
+
 
 const MAIN_MENU := "res://scenes/menus/main_menu.tscn"
 const LEVEL_SELECT := "res://scenes/menus/level_select.tscn"

@@ -6,7 +6,7 @@ const DIRECTIONS: Array[Vector2i] = [
 ]
 
 var size: Vector2i
-var _occupants: Dictionary = {}   # Vector2i -> entity_id (int)
+var _occupants: Dictionary = {}   
 var _astar := AStarGrid2D.new()
 
 func _init(p_size: Vector2i) -> void:
@@ -22,7 +22,6 @@ func is_in_bounds(cell: Vector2i) -> bool:
 	return Rect2i(Vector2i.ZERO, size).has_point(cell)
 	
 func cell_to_world(cell: Vector2i) -> Vector2:
-	# Returns the TOP-LEFT corner of the cell. Sprites are not centered.
 	return Vector2(cell * CELL_SIZE)
 	
 func world_to_cell(pos: Vector2) -> Vector2i:
@@ -112,8 +111,6 @@ func get_cells_in_range(origin: Vector2i, min_range: int, max_range: int) -> Arr
 
 	return cells
 
-## Walking distance from the nearest source cell to every cell reachable from it.
-## Respects walls, ignores units. Cells that can't be reached are absent.
 func distance_map(sources: Array[Vector2i]) -> Dictionary:
 	var dist := {}
 	var frontier: Array[Vector2i] = []

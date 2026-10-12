@@ -1,19 +1,15 @@
 extends Control
-## Pick which heroes go into the next battle, and which of their commander
-## bonuses are active. Each row is [hero toggle] [commander bonus toggle].
-## A bonus can only be chosen for a hero who is in the squad.
 
-@onready var _hero_list: GridContainer = $VBox/HeroList   # Columns = 2
+@onready var _hero_list: GridContainer = $VBox/HeroList  
 @onready var _count_label: Label = $VBox/Count
 @onready var _start_button: Button = $VBox/Buttons/Start
 @onready var _back_button: Button = $VBox/Buttons/Back
 
 var _max_squad := 0
-var _command_buttons: Dictionary = {}   # CharacterState -> its bonus Button
+var _command_buttons: Dictionary = {}  
 
 
 func _ready() -> void:
-	# Running this scene alone with F6? Fall back to the first level.
 	if GameState.current_level == null and not GameState.CATALOG.levels.is_empty():
 		GameState.current_level = GameState.CATALOG.levels.front()
 
@@ -81,7 +77,7 @@ func _refresh() -> void:
 		GameState.squad.size(), _max_squad,
 		GameState.commanders.size(), GameState.MAX_COMMANDERS,
 	]
-	# A bonus button only works for heroes in the squad who have a bonus.
+
 	for character in _command_buttons:
 		var in_squad: bool = character in GameState.squad
 		var has_bonus: bool = character.data.commander_bonus != null

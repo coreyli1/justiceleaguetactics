@@ -1,6 +1,5 @@
 class_name AIBehavior extends Resource
-## Decides what an enemy unit does on its turn by scoring every option.
-## Pure: it only reads the board, never changes it.
+
 
 @export_group("Attack scoring")
 @export var damage_weight: float = 1.0     # points per damage dealt

@@ -1,18 +1,14 @@
 class_name DeploymentController extends Node
-## The pre-battle phase: heroes start off the map, and the player places them on
-## the level's deploy tiles. Pick a hero (from the panel or the map), then confirm
-## a deploy tile to place, move or swap them. Cancel on a placed hero sends them
-## back to the panel. Emits `finished` when the player starts the battle.
+
 
 signal finished
 
 var _battle: Battle
 var _cursor: GridCursor
-var _panel: DeploymentPanel   # optional: without it, everyone is auto-placed
-
+var _panel: DeploymentPanel   
 var _active := false
 var _cells: Array[Vector2i] = []
-var _picked: CharacterState = null   # hero picked up (placed or not), or null
+var _picked: CharacterState = null   
 
 
 func setup(battle: Battle, cursor: GridCursor, panel: DeploymentPanel = null) -> void:
@@ -26,21 +22,18 @@ func setup(battle: Battle, cursor: GridCursor, panel: DeploymentPanel = null) ->
 		_panel.start_pressed.connect(_finish)
 
 
-## Called by Battle once the level is loaded.
 func begin(cells: Array[Vector2i]) -> void:
 	_cells = cells
 	var squad := _battle.get_squad()
 
 	if _panel == null:
-		# Nothing to place heroes from: auto-place everyone and go straight to turn 1.
 		for i in mini(squad.size(), cells.size()):
 			_battle.deploy_character(squad[i], cells[i])
 		finished.emit()
 		return
 
-	_battle.board.show_moves(_cells)   # highlight where heroes may stand
+	_battle.board.show_moves(_cells)  
 
-	# Deploy tiles mostly on the left half? Put the panel on the right, and vice versa.
 	var total_x := 0
 	for cell in cells:
 		total_x += cell.x
@@ -48,7 +41,7 @@ func begin(cells: Array[Vector2i]) -> void:
 	_panel.open(squad, on_right)
 
 	if not cells.is_empty():
-		_cursor.move_to(cells[0])   # no heroes on the map yet, so start on a deploy tile
+		_cursor.move_to(cells[0])   
 	_active = true
 	_cursor.enabled = true
 	_refresh()
@@ -59,8 +52,7 @@ func begin(cells: Array[Vector2i]) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if _active and event.is_action_pressed("end_turn"):
 		_finish()
-		# Stop this key press here, or PlayerController (now active) would also
-		# see it and immediately end turn 1.
+
 		get_viewport().set_input_as_handled()
 
 
@@ -85,8 +77,6 @@ func _on_cancelled(cell: Vector2i) -> void:
 
 
 # --- Actions ----------------------------------------------------------------------
-
-## Picks a hero up, from the map or from the panel's list.
 func _pick_up(character: CharacterState) -> void:
 	if not _active:
 		return
@@ -104,11 +94,11 @@ func _place_picked(cell: Vector2i) -> void:
 	if cell in _cells:
 		var unit := _battle.get_unit_for(_picked)
 		if unit:
-			_battle.reposition(unit, cell)   # already on the map: move, or swap
+			_battle.reposition(unit, cell)   
 		else:
 			var occupant := _battle.get_unit_at(cell)
 			if occupant:
-				_battle.undeploy(occupant)   # coming from the panel: bench whoever stood here
+				_battle.undeploy(occupant)   
 			_battle.deploy_character(_picked, cell)
 	_put_down()
 
@@ -129,10 +119,10 @@ func _send_back(cell: Vector2i) -> void:
 
 func _finish() -> void:
 	if not _can_start():
-		return   # need at least one hero on the map
+		return   
 	_active = false
 	_picked = null
-	_cursor.enabled = false   # the player controller takes over the cursor from here
+	_cursor.enabled = false   
 	_panel.close()
 	_battle.board.clear_highlights()
 	finished.emit()

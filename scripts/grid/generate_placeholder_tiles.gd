@@ -1,7 +1,5 @@
 @tool
 extends EditorScript
-## One-off: generates a 48x16 placeholder tileset (floor, wall, deploy marker).
-## Run it from the Script editor with File > Run (Ctrl+Shift+X). Safe to delete afterwards.
 
 const PATH := "res://art/placeholder_tiles.png"
 const SIZE := 16
@@ -19,7 +17,6 @@ func _run() -> void:
 	print("Saved ", PATH)
 
 
-## Fills one 16x16 slot with a color and a 1px border, so grid lines stay visible.
 func _tile(img: Image, index: int, fill: Color, border: Color) -> void:
 	var origin := Vector2i(index * SIZE, 0)
 	img.fill_rect(Rect2i(origin, Vector2i(SIZE, SIZE)), border)

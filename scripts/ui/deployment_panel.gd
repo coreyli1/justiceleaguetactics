@@ -1,19 +1,16 @@
 class_name DeploymentPanel extends PanelContainer
-## Side panel shown during deployment: lists the squad, shows who is picked up
-## and who is already on the map, and has the Start Battle button.
-## It knows nothing about battle rules; it only displays things and reports clicks.
 
 signal hero_picked(character: CharacterState)
 signal start_pressed
 
 const WIDTH := 84
-const PLACED_TINT := Color(1, 1, 1, 0.45)   # heroes already on the map look faded
+const PLACED_TINT := Color(1, 1, 1, 0.45)   
 
 @onready var _hero_list: VBoxContainer = $VBox/HeroList
 @onready var _commanders_label: Label = $VBox/Commanders
 @onready var _start_button: Button = $VBox/Start
 
-var _buttons: Dictionary = {}   # CharacterState -> Button
+var _buttons: Dictionary = {}   
 
 
 func _ready() -> void:
@@ -22,7 +19,7 @@ func _ready() -> void:
 	_start_button.pressed.connect(start_pressed.emit)
 
 
-## Shows the panel on the side of the screen away from the deploy tiles.
+
 func open(squad: Array[CharacterState], on_right: bool) -> void:
 	for child in _hero_list.get_children():
 		child.queue_free()
@@ -35,7 +32,6 @@ func open(squad: Array[CharacterState], on_right: bool) -> void:
 		button.icon = character.data.sprite
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		# No keyboard focus: arrow keys keep moving the map cursor instead.
 		button.focus_mode = Control.FOCUS_NONE
 		button.pressed.connect(hero_picked.emit.bind(character))
 		_hero_list.add_child(button)
@@ -51,7 +47,6 @@ func open(squad: Array[CharacterState], on_right: bool) -> void:
 	show()
 
 
-## Redraws every button's state. `placed` is a set: CharacterState -> true.
 func refresh(placed: Dictionary, picked: CharacterState, can_start: bool) -> void:
 	for character in _buttons:
 		var button: Button = _buttons[character]

@@ -2,7 +2,7 @@ class_name UnitData extends Resource
 
 enum Type {HUMAN, META, ALIEN}
 
-@export var id: StringName              # stable ID for saves, e.g. &"soldier"
+@export var id: StringName              
 @export var display_name: String = "Unit"
 @export var type: Type = Type.HUMAN
 @export var commander_bonus: CommanderBonus
@@ -16,8 +16,8 @@ enum Type {HUMAN, META, ALIEN}
 @export var move_range: int = 3
 
 @export_group("Attack Range")
-@export var attack_range_min: int = 1   # 1 = adjacent
-@export var attack_range_max: int = 1   # archers might be 2–3
+@export var attack_range_min: int = 1   
+@export var attack_range_max: int = 1  
 
 
 

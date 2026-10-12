@@ -1,6 +1,4 @@
-# scripts/resources/commander_bonus.gd
 class_name CommanderBonus extends Resource
-## A squad-wide stat boost a hero provides while commanding.
 
 @export var display_name: String = "Bonus"
 @export_multiline var description: String
