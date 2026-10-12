@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://o0t0p8hlxln0"]
 
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_he4uv"]
+[ext_resource type="Texture2D" uid="uid://cxwms408gmmih" path="res://art/wonder woman.png" id="2_yv8jn"]
 
 [resource]
 script = ExtResource("1_he4uv")
 id = &"3"
 display_name = "Wonder Woman"
+sprite = ExtResource("2_yv8jn")
 attack_range_min = 2
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

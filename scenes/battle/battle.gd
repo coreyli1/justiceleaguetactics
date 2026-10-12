@@ -10,10 +10,6 @@ enum Outcome { NONE, VICTORY, DEFEAT }
 const UNIT_SCENE := preload("res://scenes/units/unit.tscn")
 const GRID_SIZE := Vector2i(20, 11)
 
-const SOLDIER := preload("res://data/units/soldier.tres")
-const ARCHER := preload("res://data/units/archer.tres")
-const BRUTE := preload("res://data/units/brute.tres")
-
 var grid: Grid
 var units: Dictionary = {}   # entity_id -> Unit (living units only)
 var turn_manager: TurnManager
@@ -24,8 +20,8 @@ var _next_entity_id := 0
 
 @onready var board: Board = $Board
 @onready var entities: Node2D = $Entities
-@onready var action_menu: ActionMenu = $UI/ActionMenu
-@onready var result_label: Label = $UI/ResultLabel
+@onready var action_menu: ActionMenu = $Entities/UI/ActionMenu
+@onready var result_label: Label = $Entities/UI/ResultLabel
 
 @export var level: LevelData
 var level_map: LevelMap
@@ -45,6 +41,7 @@ func _ready() -> void:
 	player.setup(self, action_menu)
 	turn_manager.start_phase(Unit.Team.PLAYER)
 	
+	player.setup(self, action_menu, $Cursor, $UI/EndTurnButton)
 
 
 func _unhandled_input(event: InputEvent) -> void:

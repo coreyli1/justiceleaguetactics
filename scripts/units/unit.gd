@@ -28,7 +28,8 @@ var move_range: int:
 
 func setup(p_data: UnitData, p_team: Team) -> void:
 	data = p_data
-	
+	if data.sprite:
+		$Sprite2D.texture = data.sprite
 	team = p_team
 	hp = data.max_hp
 	

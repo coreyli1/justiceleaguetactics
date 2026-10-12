@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_lgcng"]
 [ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_y2hdf"]
+[ext_resource type="Texture2D" uid="uid://d3grn173exmrc" path="res://art/batman.png" id="3_0pvli"]
 
 [sub_resource type="Resource" id="Resource_0pvli"]
 script = ExtResource("1_y2hdf")
@@ -13,6 +14,7 @@ script = ExtResource("1_lgcng")
 id = &"2"
 display_name = "Batman"
 commander_bonus = SubResource("Resource_0pvli")
+sprite = ExtResource("3_0pvli")
 attack_range_min = 2
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

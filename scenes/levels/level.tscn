@@ -19,9 +19,9 @@ tile_set = ExtResource("2_uvc87")
 [node name="Enemies" type="Node2D" parent="." unique_id=137085501]
 
 [node name="EnemySpawn2" parent="Enemies" unique_id=776261832 instance=ExtResource("3_qdh5e")]
-position = Vector2(320, 0)
+position = Vector2(304, 0)
 unit = ExtResource("4_uvc87")
 
 [node name="EnemySpawn" parent="Enemies" unique_id=1395691054 instance=ExtResource("3_qdh5e")]
-position = Vector2(320, 16)
+position = Vector2(304, 16)
 unit = ExtResource("4_uvc87")

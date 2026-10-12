@@ -6,6 +6,7 @@ enum Type {HUMAN, META, ALIEN}
 @export var display_name: String = "Unit"
 @export var type: Type = Type.HUMAN
 @export var commander_bonus: CommanderBonus
+@export var sprite: Texture2D
 
 @export_group("Stats")
 @export var max_hp: int = 10
