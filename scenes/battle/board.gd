@@ -5,12 +5,14 @@ class_name Board extends Node2D
 
 const MOVE_COLOR := Color(0.3, 0.6, 1.0, 0.5)
 const ATTACK_COLOR := Color(0.842, 0.473, 0.543, 0.5)
-const PATH_COLOR := Color(0.0, 0.991, 0.916, 0.75)
+const PATH_COLOR := Color(1.0, 0.85, 0.3, 0.75)
+const MARK_COLOR := Color(1.0, 0.85, 0.3, 0.75)   # e.g. the hero picked up during deployment
 
 var _grid: Grid
 var _move_cells: Array[Vector2i] = []
 var _attack_cells: Array[Vector2i] = []
 var _path: Array[Vector2i] = []
+var _marked: Array[Vector2i] = []
 
 
 func setup(grid: Grid) -> void:
@@ -33,10 +35,17 @@ func show_path(cells: Array[Vector2i]) -> void:
 	queue_redraw()
 
 
+## Single-cell emphasis, independent of the other highlights.
+func show_marked(cells: Array[Vector2i]) -> void:
+	_marked.assign(cells)
+	queue_redraw()
+
+
 func clear_highlights() -> void:
 	_move_cells.clear()
 	_attack_cells.clear()
 	_path.clear()
+	_marked.clear()
 	queue_redraw()
 
 
@@ -48,6 +57,8 @@ func _draw() -> void:
 	for cell in _attack_cells:
 		_draw_cell(cell, ATTACK_COLOR)
 	_draw_path()
+	for cell in _marked:
+		_draw_cell(cell, MARK_COLOR)
 
 
 func _draw_cell(cell: Vector2i, color: Color) -> void:

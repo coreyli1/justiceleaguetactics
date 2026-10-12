@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://ddupx82sjdst1"]
+
+[ext_resource type="Script" uid="uid://cnj5mucogxb3d" path="res://scripts/ui/deployment_panel.gd" id="1_sl18q"]
+
+[node name="DeploymentPanel" type="PanelContainer" unique_id=578958630]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -30.0
+offset_right = 105.0
+offset_bottom = 30.0
+grow_vertical = 2
+script = ExtResource("1_sl18q")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1632257461]
+layout_mode = 2
+alignment = 1
+
+[node name="Title" type="Label" parent="VBox" unique_id=1596941408]
+layout_mode = 2
+text = "Deployment"
+
+[node name="Hint" type="Label" parent="VBox" unique_id=514623608]
+layout_mode = 2
+text = "Pick a hero, then a blue tile"
+
+[node name="HeroList" type="VBoxContainer" parent="VBox" unique_id=745456215]
+layout_mode = 2
+
+[node name="Commanders" type="Label" parent="VBox" unique_id=1635542127]
+layout_mode = 2
+
+[node name="Start" type="Button" parent="VBox" unique_id=1735689716]
+layout_mode = 2
+text = "Start Battle"

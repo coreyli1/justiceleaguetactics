@@ -35,8 +35,8 @@ func setup(p_data: UnitData, p_team: Team) -> void:
 	
 	update_visual()
 
-func update_visual():
-
+func update_visual() -> void:
+	modulate = Color.WHITE   
 	if has_acted:
 		modulate = modulate.darkened(0.5)
 	

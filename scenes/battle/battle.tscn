@@ -4,8 +4,10 @@
 [ext_resource type="Resource" uid="uid://dapv1fnq775f0" path="res://data/levels/level_01.tres" id="2_pll4o"]
 [ext_resource type="Script" uid="uid://dnj1yt6hffj2a" path="res://scenes/battle/board.gd" id="2_xd4uy"]
 [ext_resource type="Script" uid="uid://c8tmxvoaf1wop" path="res://scenes/battle/player_controller.gd" id="3_0yh6x"]
+[ext_resource type="Script" uid="uid://cq3ai7fl2dwql" path="res://scripts/core/battle_camera.gd" id="3_agsc7"]
 [ext_resource type="Script" uid="uid://cvi23nphmn6lv" path="res://scripts/ui/action_menu.gd" id="4_0yh6x"]
 [ext_resource type="PackedScene" uid="uid://cpdw4raonrqce" path="res://scenes/menus/pause_menu.tscn" id="6_fh7rg"]
+[ext_resource type="PackedScene" uid="uid://ddupx82sjdst1" path="res://scenes/menus/DeploymentPanel.tscn" id="6_py4tk"]
 [ext_resource type="Script" uid="uid://sapcn2nqp2ih" path="res://scripts/ui/grid_cursor.gd" id="7_pll4o"]
 
 [sub_resource type="Theme" id="Theme_7gynk"]
@@ -14,6 +16,9 @@ default_font_size = 8
 [node name="Battle" type="Node2D" unique_id=2109116592]
 script = ExtResource("1_b7c46")
 level = ExtResource("2_pll4o")
+
+[node name="Camera" type="Camera2D" parent="." unique_id=237272575]
+script = ExtResource("3_agsc7")
 
 [node name="Board" type="Node2D" parent="." unique_id=583861663]
 script = ExtResource("2_xd4uy")
@@ -51,6 +56,8 @@ horizontal_alignment = 1
 offset_right = 4.0
 offset_bottom = 4.0
 text = "End Turn"
+
+[node name="DeploymentPanel" parent="UI" unique_id=578958630 instance=ExtResource("6_py4tk")]
 
 [node name="PauseMenu" parent="." unique_id=1969328940 instance=ExtResource("6_fh7rg")]
 
