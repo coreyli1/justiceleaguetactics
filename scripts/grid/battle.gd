@@ -1,14 +1,21 @@
 class_name Battle extends Node2D
 ## Owns the battle's state (grid, units, turns) and the shared actions that
 ## both the player and the AI use: moving, attacking, killing, ending.
-## It does NOT handle player input or drawing; see PlayerController and Board.
+## It does NOT handle input, turns or drawing. Each phase has its own controller:
+##   DeploymentController - placing heroes before turn 1
+##   PlayerController     - the player's turns
+##   EnemyController      - the enemy's turns (AI)
+## and Board draws the highlights.
 ##
-## Expected scene tree (UI, PlayerController and PauseMenu directly under Battle):
+## Expected scene tree (everything directly under Battle except the UI children):
 ##   Battle
+##    ├ Camera
 ##    ├ Board
 ##    ├ Entities            (empty in the editor; units are added here at runtime)
 ##    ├ Cursor
+##    ├ DeploymentController
 ##    ├ PlayerController
+##    ├ EnemyController
 ##    ├ UI
 ##    │   ├ ActionMenu (Attack, Wait)
 ##    │   ├ ResultLabel
@@ -38,12 +45,13 @@ var _next_entity_id := 0
 @onready var board: Board = $Board
 @onready var entities: Node2D = $Entities
 @onready var cursor: GridCursor = $Cursor
+@onready var deployment: DeploymentController = $DeploymentController
 @onready var player: PlayerController = $PlayerController
+@onready var enemies: EnemyController = $EnemyController
 @onready var action_menu: ActionMenu = $UI/ActionMenu
 @onready var result_label: Label = $UI/ResultLabel
 @onready var end_turn_button: Button = $UI/EndTurnButton
-## Optional: if the scene has no DeploymentPanel instance, deployment still works
-## (the End Turn button doubles as "Start Battle").
+## Optional: without a DeploymentPanel instance, heroes are auto-placed.
 @onready var deploy_panel: DeploymentPanel = get_node_or_null("UI/DeploymentPanel")
 
 
@@ -56,17 +64,21 @@ func _ready() -> void:
 	camera.setup(level_map.get_size())
 
 	turn_manager = TurnManager.new(units)
-	turn_manager.phase_started.connect(_on_phase_started)
 
 	board.setup(grid)
-	#cursor.moved.connect(camera.follow) allows camera to folow cursor
-	player.setup(self, action_menu, cursor, end_turn_button, deploy_panel)
-	player.begin_deployment(level_map.get_deploy_cells())   # turn 1 waits for start_battle()
+	cursor.setup(grid)
+	#cursor.moved.connect(camera.follow) allows camera to follow cursor
+	player.setup(self, action_menu, cursor, end_turn_button)
+	enemies.setup(self)
+	deployment.setup(self, cursor, deploy_panel)
+	deployment.finished.connect(start_battle)
+	deployment.begin(level_map.get_deploy_cells())   # turn 1 waits for start_battle()
 
 
-## Called when the player confirms their formation. Starts turn 1.
+## Called when deployment is finished. Starts turn 1.
 func start_battle() -> void:
 	_apply_commander_bonuses()   # heroes exist now, so they can receive the bonuses
+	player.activate()
 	turn_manager.start_phase(Unit.Team.PLAYER)
 
 
@@ -224,35 +236,6 @@ func resolve_attack(attacker: Unit, target: Unit) -> bool:
 		_end_battle(outcome)
 		return true
 	return false
-
-
-# --- Enemy phase ------------------------------------------------------------------
-
-func _on_phase_started(team: Unit.Team) -> void:
-	if team == Unit.Team.ENEMY:
-		_run_enemy_phase()
-
-
-func _run_enemy_phase() -> void:
-	# false = the timer respects pause, so enemies don't act while the game is paused.
-	await get_tree().create_timer(0.4, false).timeout
-
-	var enemies := units.values().filter(func(u): return u.team == Unit.Team.ENEMY)
-	for unit in enemies:
-		if not units.has(unit.entity_id):
-			continue   # died earlier this phase
-		if unit.data.ai_behavior:
-			var decision: AIBehavior.Decision = unit.data.ai_behavior.decide(unit, grid, units)
-			if decision.cell != unit.cell:
-				camera.follow(unit.cell)
-				await move_unit(unit, decision.cell)
-			if decision.target:
-				if resolve_attack(unit, decision.target):
-					return   # battle over, so don't start another turn
-		turn_manager.mark_acted(unit)
-		await get_tree().create_timer(0.25, false).timeout
-
-	turn_manager.end_phase()
 
 
 # --- Internals --------------------------------------------------------------------

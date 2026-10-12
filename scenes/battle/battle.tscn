@@ -6,8 +6,10 @@
 [ext_resource type="Script" uid="uid://c8tmxvoaf1wop" path="res://scripts/core/player_controller.gd" id="3_0yh6x"]
 [ext_resource type="Script" uid="uid://cq3ai7fl2dwql" path="res://scripts/core/battle_camera.gd" id="3_agsc7"]
 [ext_resource type="Script" uid="uid://cvi23nphmn6lv" path="res://scripts/ui/action_menu.gd" id="4_0yh6x"]
+[ext_resource type="Script" uid="uid://dpgnyowuhxejo" path="res://scripts/core/deployment_controller.gd" id="5_fisqk"]
 [ext_resource type="PackedScene" uid="uid://cpdw4raonrqce" path="res://scenes/menus/pause_menu.tscn" id="6_fh7rg"]
 [ext_resource type="PackedScene" uid="uid://ddupx82sjdst1" path="res://scenes/menus/deployment_panel.tscn" id="6_py4tk"]
+[ext_resource type="Script" uid="uid://t0abamktdb0l" path="res://scripts/core/enemy_controller.gd" id="7_mxe8n"]
 [ext_resource type="Script" uid="uid://sapcn2nqp2ih" path="res://scripts/ui/grid_cursor.gd" id="7_pll4o"]
 
 [sub_resource type="Theme" id="Theme_7gynk"]
@@ -25,8 +27,14 @@ script = ExtResource("2_xd4uy")
 
 [node name="Entities" type="Node2D" parent="." unique_id=1333722933]
 
+[node name="DeploymentController" type="Node" parent="." unique_id=1964296725]
+script = ExtResource("5_fisqk")
+
 [node name="PlayerController" type="Node" parent="." unique_id=1825093552]
 script = ExtResource("3_0yh6x")
+
+[node name="EnemyController" type="Node" parent="." unique_id=1145119643]
+script = ExtResource("7_mxe8n")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=605141445]
 
