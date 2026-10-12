@@ -4,9 +4,14 @@ class_name BattleCamera extends Camera2D
 ## maps smaller than the screen are centred instead.
 
 const EDGE_MARGIN := 2   # cells kept between the focus and the screen edge
-
+const PAN_SPEED := 160.0
 var _map_px := Vector2.ZERO
 
+
+func _process(delta: float) -> void:
+	var direction := Input.get_vector("camera_left", "camera_right", "camera_up", "camera_down")
+	if direction != Vector2.ZERO:
+		position = _clamp(position + direction * PAN_SPEED * delta)
 
 func _ready() -> void:
 	# With a top-left anchor, `position` is the top-left corner of what you see,

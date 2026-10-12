@@ -59,7 +59,7 @@ func _ready() -> void:
 	turn_manager.phase_started.connect(_on_phase_started)
 
 	board.setup(grid)
-	cursor.moved.connect(camera.follow)
+	#cursor.moved.connect(camera.follow) allows camera to folow cursor
 	player.setup(self, action_menu, cursor, end_turn_button, deploy_panel)
 	player.begin_deployment(level_map.get_deploy_cells())   # turn 1 waits for start_battle()
 
