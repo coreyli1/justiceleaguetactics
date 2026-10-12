@@ -44,6 +44,7 @@ var _attack_cells: Array[Vector2i] = []
 
 var _deploy_cells: Array[Vector2i] = []
 var _picked: CharacterState = null   # hero picked up during deployment (placed or not)
+var _mouse_over_ui := false          # true while the mouse is over a button or panel
 
 
 func setup(battle: Battle, menu: ActionMenu, cursor: GridCursor, end_turn_button: Button, deploy_panel: DeploymentPanel = null) -> void:
@@ -72,18 +73,30 @@ func setup(battle: Battle, menu: ActionMenu, cursor: GridCursor, end_turn_button
 
 # --- Input ------------------------------------------------------------------------
 
+## Runs BEFORE the GUI sees the event. Assume the mouse is over UI for now;
+## if no button/panel consumes the movement, _unhandled_input corrects it.
+func _input(event: InputEvent) -> void:
+	if _battle != null and event is InputEventMouseMotion:
+		_mouse_over_ui = true
+		_refresh_cursor()
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if _battle == null:
 		return
 
 	# Hovering the mouse over the grid always moves the cursor, in any state.
 	if event is InputEventMouseMotion:
+		_mouse_over_ui = false   # the event reached us, so no Control is under the mouse
+		_refresh_cursor()
 		_set_cursor(_mouse_cell())
 		return
 
 	# Arrow keys / WASD move it one cell (true = keep repeating while held).
 	for action in CURSOR_ACTIONS:
 		if event.is_action_pressed(action, true):
+			_mouse_over_ui = false   # keyboard players get the cursor back
+			_refresh_cursor()
 			if _cursor_active():
 				_set_cursor(_cursor.cell + CURSOR_ACTIONS[action])
 			return
@@ -415,9 +428,7 @@ func _refresh_cursor() -> void:
 	if _cursor == null or _battle == null:
 		return   # the setter can run before setup() finishes
 	var players_turn := _is_deploying() or _battle.turn_manager.current_team == Unit.Team.PLAYER
-	_cursor.visible = _cursor_active() and players_turn
-	
-	print("cursor visible: ", _cursor.visible, "  team: ", _battle.turn_manager.current_team)
+	_cursor.visible = _cursor_active() and players_turn and not _mouse_over_ui
 
 func _on_phase_started(_team: Unit.Team) -> void:
 	_refresh_end_turn_button()

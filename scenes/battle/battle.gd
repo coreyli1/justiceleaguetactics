@@ -34,7 +34,7 @@ var is_over := false
 
 var _next_entity_id := 0
 
-@onready var camera: Camera2D = $Camera
+@onready var camera: BattleCamera = $Camera
 @onready var board: Board = $Board
 @onready var entities: Node2D = $Entities
 @onready var cursor: GridCursor = $Cursor
@@ -53,11 +53,13 @@ func _ready() -> void:
 
 	result_label.hide()
 	_load_level()
+	camera.setup(level_map.get_size())
 
 	turn_manager = TurnManager.new(units)
 	turn_manager.phase_started.connect(_on_phase_started)
 
 	board.setup(grid)
+	cursor.moved.connect(camera.follow)
 	player.setup(self, action_menu, cursor, end_turn_button, deploy_panel)
 	player.begin_deployment(level_map.get_deploy_cells())   # turn 1 waits for start_battle()
 
