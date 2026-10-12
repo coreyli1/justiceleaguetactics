@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bdrpv34ineo7y"
-path="res://.godot/imported/superman.png-eeda27d6be040dbec580183a41551519.ctex"
+path="res://.godot/imported/superman.png-1bae12384db7686ec8b17546ae2c73b0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/superman.png"
-dest_files=["res://.godot/imported/superman.png-eeda27d6be040dbec580183a41551519.ctex"]
+source_file="res://art/heroes/superman.png"
+dest_files=["res://.godot/imported/superman.png-1bae12384db7686ec8b17546ae2c73b0.ctex"]
 
 [params]
 

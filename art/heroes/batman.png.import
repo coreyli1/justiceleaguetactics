@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d3grn173exmrc"
-path="res://.godot/imported/batman.png-7c2a3743ee58412f6bf24b45bd9ad8d0.ctex"
+path="res://.godot/imported/batman.png-caa861b9ac6a4c79f65a5f6850859d19.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/batman.png"
-dest_files=["res://.godot/imported/batman.png-7c2a3743ee58412f6bf24b45bd9ad8d0.ctex"]
+source_file="res://art/heroes/batman.png"
+dest_files=["res://.godot/imported/batman.png-caa861b9ac6a4c79f65a5f6850859d19.ctex"]
 
 [params]
 

@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_r1f35")
 id = &"level_01"
+display_name = "Level 1"
 map = ExtResource("1_55y67")
 metadata/_custom_type_script = "uid://dbc6wkq4800fo"

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://3m1bqll1x34p"]
 
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_kfgxq"]
-[ext_resource type="Texture2D" uid="uid://bdrpv34ineo7y" path="res://art/superman.png" id="2_x2xd2"]
+[ext_resource type="Texture2D" uid="uid://bdrpv34ineo7y" path="res://art/heroes/superman.png" id="2_x2xd2"]
 
 [resource]
 script = ExtResource("1_kfgxq")

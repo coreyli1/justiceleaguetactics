@@ -8,10 +8,7 @@ var cell := Vector2i.ZERO
 
 
 func _ready() -> void:
-	# Gentle pulse so the cursor is easy to spot.
-	var tween := create_tween().set_loops()
-	tween.tween_property(self, "modulate:a", 0.45, 0.4)
-	tween.tween_property(self, "modulate:a", 1.0, 0.4)
+	pass
 
 
 func move_to(p_cell: Vector2i) -> void:

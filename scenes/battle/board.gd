@@ -1,16 +1,16 @@
 class_name Board extends Node2D
-## Draws the grid and the highlight overlays. Purely visual: it never decides
-## anything, it only shows what it's told.
+## Draws the highlight overlays on top of the level's painted map:
+## movement range, attack range, and the route being drawn.
+## Purely visual: it never decides anything, it only shows what it's told.
 
-const TILE_A := Color("3a3f5c")
-const TILE_B := Color("2f3350")
-const WALL_COLOR := Color("cdefa2ff")
 const MOVE_COLOR := Color(0.3, 0.6, 1.0, 0.5)
 const ATTACK_COLOR := Color(0.842, 0.473, 0.543, 0.5)
+const PATH_COLOR := Color(0.0, 0.991, 0.916, 0.75)
 
 var _grid: Grid
 var _move_cells: Array[Vector2i] = []
 var _attack_cells: Array[Vector2i] = []
+var _path: Array[Vector2i] = []
 
 
 func setup(grid: Grid) -> void:
@@ -28,27 +28,38 @@ func show_attacks(cells: Array[Vector2i]) -> void:
 	queue_redraw()
 
 
+func show_path(cells: Array[Vector2i]) -> void:
+	_path.assign(cells)
+	queue_redraw()
+
+
 func clear_highlights() -> void:
 	_move_cells.clear()
 	_attack_cells.clear()
+	_path.clear()
 	queue_redraw()
 
 
 func _draw() -> void:
 	if _grid == null:
 		return
-	for x in _grid.size.x:
-		for y in _grid.size.y:
-			var cell := Vector2i(x, y)
-			var color := TILE_A if (x + y) % 2 == 0 else TILE_B
-			if _grid.is_blocked(cell):
-				color = WALL_COLOR
-			_draw_cell(cell, color)
 	for cell in _move_cells:
 		_draw_cell(cell, MOVE_COLOR)
 	for cell in _attack_cells:
 		_draw_cell(cell, ATTACK_COLOR)
+	_draw_path()
 
 
 func _draw_cell(cell: Vector2i, color: Color) -> void:
 	draw_rect(Rect2(_grid.cell_to_world(cell), Vector2.ONE * Grid.CELL_SIZE), color)
+
+
+## Fills each cell on the route, with the destination drawn a bit stronger.
+func _draw_path() -> void:
+	if _path.size() < 2:
+		return   # standing still: nothing to draw
+	for i in range(0, _path.size()):   # skip index 0, the cell the unit stands on
+		var color := PATH_COLOR
+		if i < _path.size() - 1:
+			color.a = 0.45   # route cells: lighter
+		_draw_cell(_path[i], color)

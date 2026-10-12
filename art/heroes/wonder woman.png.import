@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvgmgujnu1vvl"
-path="res://.godot/imported/hawkgirl.png-81944c128269592058adf4a02925c832.ctex"
+uid="uid://cxwms408gmmih"
+path="res://.godot/imported/wonder woman.png-5f2fec219fdfbb045da11dd2e9bc4a7f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/hawkgirl.png"
-dest_files=["res://.godot/imported/hawkgirl.png-81944c128269592058adf4a02925c832.ctex"]
+source_file="res://art/heroes/wonder woman.png"
+dest_files=["res://.godot/imported/wonder woman.png-5f2fec219fdfbb045da11dd2e9bc4a7f.ctex"]
 
 [params]
 

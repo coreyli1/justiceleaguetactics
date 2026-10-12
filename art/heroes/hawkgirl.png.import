@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlw8ha4js12xy"
-path="res://.godot/imported/martian manhunter.png-e48f9352587c68d86b8792b007c5090b.ctex"
+uid="uid://cvgmgujnu1vvl"
+path="res://.godot/imported/hawkgirl.png-af2c106677b460adac4bd6d98855517f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/martian manhunter.png"
-dest_files=["res://.godot/imported/martian manhunter.png-e48f9352587c68d86b8792b007c5090b.ctex"]
+source_file="res://art/heroes/hawkgirl.png"
+dest_files=["res://.godot/imported/hawkgirl.png-af2c106677b460adac4bd6d98855517f.ctex"]
 
 [params]
 

@@ -7,6 +7,7 @@ enum Type {HUMAN, META, ALIEN}
 @export var type: Type = Type.HUMAN
 @export var commander_bonus: CommanderBonus
 @export var sprite: Texture2D
+@export var ai_behavior: AIBehavior
 
 @export_group("Stats")
 @export var max_hp: int = 10
@@ -18,7 +19,6 @@ enum Type {HUMAN, META, ALIEN}
 @export var attack_range_min: int = 1   # 1 = adjacent
 @export var attack_range_max: int = 1   # archers might be 2–3
 
-@export var ai_behavior: AIBehavior
+
 
 # Later: @export var abilities: Array[AbilityData]
-# Later: @export var sprite: Texture2D

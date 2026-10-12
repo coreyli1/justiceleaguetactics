@@ -4,6 +4,10 @@ class_name PlayerController extends Node
 ##
 ## Everything goes through the cursor: the mouse moves it by hovering, the
 ## arrow keys move it one cell at a time, and "select" confirms the cell it's on.
+##
+## While a unit is selected, moving the cursor draws its route (Fire Emblem style):
+## stepping to a neighbouring cell extends the path, stepping back onto it trims it,
+## and jumping (or running out of movement) falls back to the shortest route.
 
 enum State { IDLE, UNIT_SELECTED, BUSY, CHOOSING_ACTION, TARGETING, DISABLED }
 
@@ -29,6 +33,7 @@ var _state: State = State.IDLE:
 var _selected: Unit = null
 var _move_origin: Vector2i
 var _reachable: Array[Vector2i] = []
+var _path: Array[Vector2i] = []   # the route being drawn, starting at the unit's cell
 var _attack_cells: Array[Vector2i] = []
 
 
@@ -58,10 +63,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _battle == null:
 		return
 
-	# Hovering the mouse moves the cursor.
+	# Hovering the mouse over the grid always moves the cursor, in any state.
 	if event is InputEventMouseMotion:
-		if _cursor_active():
-			_set_cursor(_mouse_cell())
+		_set_cursor(_mouse_cell())
 		return
 
 	# Arrow keys / WASD move it one cell (true = keep repeating while held).
@@ -104,8 +108,11 @@ func _cursor_active() -> bool:
 
 
 func _set_cursor(cell: Vector2i) -> void:
-	if _battle.grid.is_in_bounds(cell):
-		_cursor.move_to(cell)
+	if not _battle.grid.is_in_bounds(cell):
+		return
+	_cursor.move_to(cell)
+	if _state == State.UNIT_SELECTED:
+		_update_path(cell)
 
 
 func _mouse_cell() -> Vector2i:
@@ -128,10 +135,12 @@ func _confirm_idle(cell: Vector2i) -> void:
 
 
 func _confirm_selected(cell: Vector2i) -> void:
-	if cell in _reachable:   # includes the unit's own cell (act in place)
-		_move_selected_to(cell)
-	else:
+	if not (cell in _reachable):   # includes the unit's own cell (act in place)
 		_deselect()
+		return
+	if _path.is_empty() or _path.back() != cell:
+		_update_path(cell)   # safety net: make sure the path really ends here
+	_move_selected_along(_path.duplicate())
 
 
 func _confirm_targeting(cell: Vector2i) -> void:
@@ -151,12 +160,15 @@ func _select(unit: Unit) -> void:
 	_attack_cells.clear()
 	_battle.board.show_moves(_reachable)
 	_cursor.move_to(unit.cell)
+	_path = [unit.cell]
+	_battle.board.show_path(_path)
 	_state = State.UNIT_SELECTED
 
 
 func _deselect() -> void:
 	_selected = null
 	_reachable.clear()
+	_path.clear()
 	_attack_cells.clear()
 	_battle.board.clear_highlights()
 	_state = State.IDLE
@@ -164,11 +176,32 @@ func _deselect() -> void:
 
 # --- Moving and the action menu ------------------------------------------------------
 
-func _move_selected_to(cell: Vector2i) -> void:
+## Rebuilds the drawn route so it ends at `cell`.
+func _update_path(cell: Vector2i) -> void:
+	if not (cell in _reachable):
+		return   # out of range: keep the last valid path on screen
+
+	var index := _path.find(cell)
+	if index != -1:
+		_path.resize(index + 1)   # stepped back onto the path: trim everything after
+	elif _is_neighbor(_path.back(), cell) and _path.size() - 1 < _selected.move_range:
+		_path.append(cell)        # one step further, still within movement: extend
+	else:
+		# Jumped (mouse) or out of movement: fall back to the shortest route.
+		_path = _battle.grid.find_path(_selected.cell, cell, _selected.move_range)
+
+	_battle.board.show_path(_path)
+
+
+func _is_neighbor(a: Vector2i, b: Vector2i) -> bool:
+	return absi(a.x - b.x) + absi(a.y - b.y) == 1
+
+
+func _move_selected_along(path: Array[Vector2i]) -> void:
 	_move_origin = _selected.cell
 	_state = State.BUSY
 	_battle.board.clear_highlights()
-	await _battle.move_unit(_selected, cell)
+	await _battle.move_unit_along(_selected, path)
 	_open_menu()
 
 

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://o0t0p8hlxln0"]
 
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_he4uv"]
-[ext_resource type="Texture2D" uid="uid://cxwms408gmmih" path="res://art/wonder woman.png" id="2_yv8jn"]
+[ext_resource type="Texture2D" uid="uid://cxwms408gmmih" path="res://art/heroes/wonder woman.png" id="2_yv8jn"]
 
 [resource]
 script = ExtResource("1_he4uv")

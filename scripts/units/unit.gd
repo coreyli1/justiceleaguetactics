@@ -36,10 +36,7 @@ func setup(p_data: UnitData, p_team: Team) -> void:
 	update_visual()
 
 func update_visual():
-	match team: 
-		Team.PLAYER: modulate = Color(0.649, 0.826, 0.491, 1.0)
-		Team.ENEMY: modulate = Color(0.578, 0.095, 0.063, 1.0)
-	
+
 	if has_acted:
 		modulate = modulate.darkened(0.5)
 	

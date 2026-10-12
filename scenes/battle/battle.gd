@@ -2,46 +2,60 @@ class_name Battle extends Node2D
 ## Owns the battle's state (grid, units, turns) and the shared actions that
 ## both the player and the AI use: moving, attacking, killing, ending.
 ## It does NOT handle player input or drawing; see PlayerController and Board.
+##
+## Expected scene tree (UI, PlayerController and PauseMenu directly under Battle):
+##   Battle
+##    ├ Board
+##    ├ Entities            (empty in the editor; units are added here at runtime)
+##    ├ Cursor
+##    ├ PlayerController
+##    ├ UI
+##    │   ├ ActionMenu (Attack, Wait)
+##    │   ├ ResultLabel
+##    │   └ EndTurnButton
+##    └ PauseMenu
+## The level's map scene is added as the first child at runtime.
 
 signal battle_ended(outcome: Outcome)
 
 enum Outcome { NONE, VICTORY, DEFEAT }
 
 const UNIT_SCENE := preload("res://scenes/units/unit.tscn")
-const GRID_SIZE := Vector2i(20, 11)
+
+## Used when the battle is run directly (F6) without picking a level first.
+@export var level: LevelData
 
 var grid: Grid
+var level_map: LevelMap
 var units: Dictionary = {}   # entity_id -> Unit (living units only)
 var turn_manager: TurnManager
 var is_over := false
 
 var _next_entity_id := 0
-@onready var player: Node = $PlayerController
 
 @onready var board: Board = $Board
 @onready var entities: Node2D = $Entities
-@onready var action_menu: ActionMenu = $Entities/UI/ActionMenu
-@onready var result_label: Label = $Entities/UI/ResultLabel
+@onready var cursor: GridCursor = $Cursor
+@onready var player: PlayerController = $PlayerController
+@onready var action_menu: ActionMenu = $UI/ActionMenu
+@onready var result_label: Label = $UI/ResultLabel
+@onready var end_turn_button: Button = $UI/EndTurnButton
 
-@export var level: LevelData
-var level_map: LevelMap
 
 func _ready() -> void:
 	if GameState.current_level:
 		level = GameState.current_level
-	
+
 	result_label.hide()
-	print(level)
 	_load_level()
+	_apply_commander_bonuses()
 
 	turn_manager = TurnManager.new(units)
 	turn_manager.phase_started.connect(_on_phase_started)
 
 	board.setup(grid)
-	player.setup(self, action_menu)
+	player.setup(self, action_menu, cursor, end_turn_button)
 	turn_manager.start_phase(Unit.Team.PLAYER)
-	
-	player.setup(self, action_menu, $Cursor, $UI/EndTurnButton)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -51,6 +65,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		GameState.restart_level()
 	elif event.is_action_pressed("ui_accept"):
 		GameState.go_to_level_select()
+
+
+# --- Setup ------------------------------------------------------------------------
 
 func _load_level() -> void:
 	level_map = level.map.instantiate()
@@ -75,7 +92,28 @@ func _load_level() -> void:
 		unit.character = squad[i]
 
 
-# --- Queries ------------------------------------------------------------------
+## Sums every chosen commander's bonus and gives it to the whole squad.
+## Passive: applied once at the start, unaffected by deaths.
+func _apply_commander_bonuses() -> void:
+	var atk := 0
+	var def := 0
+	var mov := 0
+	for character in GameState.commanders:
+		var bonus := character.data.commander_bonus
+		if bonus:
+			atk += bonus.attack
+			def += bonus.defense
+			mov += bonus.move_range
+
+	for unit in units.values():
+		if unit.team == Unit.Team.PLAYER:
+			unit.bonus_attack = atk
+			unit.bonus_defense = def
+			unit.bonus_move = mov
+	print("Commander bonuses: +%d ATK, +%d DEF, +%d MOV" % [atk, def, mov])
+
+
+# --- Queries ----------------------------------------------------------------------
 
 func get_unit_at(cell: Vector2i) -> Unit:
 	return units.get(grid.get_occupant(cell))   # null if empty
@@ -85,7 +123,7 @@ func get_targets(unit: Unit) -> Array[Unit]:
 	return Combat.targets_from(unit, unit.cell, grid, units)
 
 
-# --- Shared actions (used by the player now, and the AI next) -----------------
+# --- Shared actions (used by both the player and the AI) --------------------------
 
 func spawn_unit(data: UnitData, cell: Vector2i, team: Unit.Team) -> Unit:
 	var unit: Unit = UNIT_SCENE.instantiate()
@@ -100,13 +138,18 @@ func spawn_unit(data: UnitData, cell: Vector2i, team: Unit.Team) -> Unit:
 	return unit
 
 
-## Moves a unit along its path and waits for the animation. Call with await.
+## Moves a unit along the shortest path to a cell (used by the AI). Call with await.
 func move_unit(unit: Unit, cell: Vector2i) -> void:
-	var path := grid.find_path(unit.cell, cell, unit.move_range)
+	await move_unit_along(unit, grid.find_path(unit.cell, cell, unit.move_range))
+
+
+## Moves a unit along a specific path; the first cell is where it stands
+## (used by the player's drawn route). Call with await.
+func move_unit_along(unit: Unit, path: Array[Vector2i]) -> void:
 	if path.is_empty():
 		return
-	grid.move(unit.entity_id, unit.cell, cell)   # logic first...
-	var tween := unit.move_along(path, grid)      # ...then visuals
+	grid.move(unit.entity_id, unit.cell, path.back())   # logic first...
+	var tween := unit.move_along(path, grid)             # ...then visuals
 	if tween:
 		await tween.finished
 
@@ -134,7 +177,35 @@ func resolve_attack(attacker: Unit, target: Unit) -> bool:
 	return false
 
 
-# --- Internals ------------------------------------------------------------------
+# --- Enemy phase ------------------------------------------------------------------
+
+func _on_phase_started(team: Unit.Team) -> void:
+	if team == Unit.Team.ENEMY:
+		_run_enemy_phase()
+
+
+func _run_enemy_phase() -> void:
+	# false = the timer respects pause, so enemies don't act while the game is paused.
+	await get_tree().create_timer(0.4, false).timeout
+
+	var enemies := units.values().filter(func(u): return u.team == Unit.Team.ENEMY)
+	for unit in enemies:
+		if not units.has(unit.entity_id):
+			continue   # died earlier this phase
+		if unit.data.ai_behavior:
+			var decision: AIBehavior.Decision = unit.data.ai_behavior.decide(unit, grid, units)
+			if decision.cell != unit.cell:
+				await move_unit(unit, decision.cell)
+			if decision.target:
+				if resolve_attack(unit, decision.target):
+					return   # battle over, so don't start another turn
+		turn_manager.mark_acted(unit)
+		await get_tree().create_timer(0.25, false).timeout
+
+	turn_manager.end_phase()
+
+
+# --- Internals --------------------------------------------------------------------
 
 func _kill_unit(unit: Unit) -> void:
 	print("%s is defeated" % unit.data.display_name)
@@ -158,54 +229,8 @@ func _get_outcome() -> Outcome:
 
 
 func _end_battle(outcome: Outcome) -> void:
-	print("battle ended: ", Outcome.keys()[outcome])
 	is_over = true
 	var headline := "Victory!" if outcome == Outcome.VICTORY else "Defeat..."
 	result_label.text = headline + "\nR: retry   Enter: continue"
 	result_label.show()
 	battle_ended.emit(outcome)
-
-
-func _on_phase_started(team: Unit.Team) -> void:
-	if team == Unit.Team.ENEMY:
-		_run_enemy_phase()
-
-
-func _run_enemy_phase() -> void:
-	await get_tree().create_timer(0.4).timeout
-
-	var enemies := units.values().filter(func(u): return u.team == Unit.Team.ENEMY)
-	for unit in enemies:
-		if not units.has(unit.entity_id):
-			continue   # died earlier this phase
-		if unit.data.ai_behavior:
-			var decision: AIBehavior.Decision = unit.data.ai_behavior.decide(unit, grid, units)
-			if decision.cell != unit.cell:
-				await move_unit(unit, decision.cell)
-			if decision.target:
-				if resolve_attack(unit, decision.target):
-					return   # battle over, so don't start another turn
-		turn_manager.mark_acted(unit)
-		await get_tree().create_timer(0.25).timeout
-
-	turn_manager.end_phase()
-
-## Sums every chosen commander's bonus and gives it to the whole squad.
-## Passive: applied once at the start, unaffected by deaths.
-func _apply_commander_bonuses() -> void:
-	var atk := 0
-	var def := 0
-	var mov := 0
-	for character in GameState.commanders:
-		var bonus := character.data.commander_bonus
-		if bonus:
-			atk += bonus.attack
-			def += bonus.defense
-			mov += bonus.move_range
-
-	for unit in units.values():
-		if unit.team == Unit.Team.PLAYER:
-			unit.bonus_attack = atk
-			unit.bonus_defense = def
-			unit.bonus_move = mov
-	print("Commander bonuses: +%d ATK, +%d DEF, +%d MOV" % [atk, def, mov])

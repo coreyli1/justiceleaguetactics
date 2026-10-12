@@ -1,5 +1,7 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://ccf43kkdsnayc"]
 
+[ext_resource type="Resource" uid="uid://dgfh3umkssfe4" path="res://data/ai/aggressive.tres" id="1_rnnug"]
+[ext_resource type="Texture2D" uid="uid://dgfp7foq51702" path="res://art/enemies/imperium.png" id="2_0ebko"]
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="2_rnnug"]
 
 [resource]
@@ -7,6 +9,8 @@ script = ExtResource("2_rnnug")
 id = &"11"
 display_name = "Imperium"
 type = 2
+sprite = ExtResource("2_0ebko")
+ai_behavior = ExtResource("1_rnnug")
 attack_range_min = 2
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"
