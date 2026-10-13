@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://ceu53t2yue5o3"]
 
+[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commanders/commander_bonus.gd" id="1_0pvli"]
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_lgcng"]
-[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_y2hdf"]
-[ext_resource type="Texture2D" uid="uid://d3grn173exmrc" path="res://art/heroes/batman.png" id="3_0pvli"]
+[ext_resource type="Texture2D" uid="uid://d3grn173exmrc" path="res://art/heroes/batman.png" id="3_5v2wj"]
 
 [sub_resource type="Resource" id="Resource_0pvli"]
-script = ExtResource("1_y2hdf")
+script = ExtResource("1_0pvli")
 attack = 2
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"
 
@@ -14,7 +14,7 @@ script = ExtResource("1_lgcng")
 id = &"2"
 display_name = "Batman"
 commander_bonus = SubResource("Resource_0pvli")
-sprite = ExtResource("3_0pvli")
+sprite = ExtResource("3_5v2wj")
 attack_range_min = 2
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

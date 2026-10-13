@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="CommanderBonus" format=3 uid="uid://je1mhw8siv4q"]
+[gd_resource type="Resource" script_class="FlashBonus" format=3 uid="uid://je1mhw8siv4q"]
 
-[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_h0ar5"]
+[ext_resource type="Script" uid="uid://cpfs5d8dtqi8v" path="res://scripts/resources/commanders/flash_bonus.gd" id="1_h0ar5"]
 
 [resource]
 script = ExtResource("1_h0ar5")
+display_name = "Speed Force"
+uses_per_battle = 1
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CommanderBonus" format=3 uid="uid://dmk4xmabjovyp"]
+[gd_resource type="Resource" script_class="BatmanBonus" format=3 uid="uid://dmk4xmabjovyp"]
 
-[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_cpetd"]
+[ext_resource type="Script" uid="uid://d08peaavimvjn" path="res://scripts/resources/commanders/batman_bonus.gd" id="1_cpetd"]
 
 [resource]
 script = ExtResource("1_cpetd")
+uses_per_battle = 1
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CommanderBonus" format=3 uid="uid://dlrwtvplt6arw"]
+[gd_resource type="Resource" script_class="MartianManhunterBonus" format=3 uid="uid://dlrwtvplt6arw"]
 
-[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_g2n2t"]
+[ext_resource type="Script" uid="uid://cm6ufcek02bg2" path="res://scripts/resources/commanders/martianmanhunter_bonus.gd" id="1_g2n2t"]
 
 [resource]
 script = ExtResource("1_g2n2t")
+uses_per_battle = 2
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

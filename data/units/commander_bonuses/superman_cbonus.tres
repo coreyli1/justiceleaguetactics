@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="CommanderBonus" format=3 uid="uid://bc4v7ciq7m77e"]
 
-[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_tttj4"]
+[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commanders/commander_bonus.gd" id="1_tttj4"]
 
 [resource]
 script = ExtResource("1_tttj4")

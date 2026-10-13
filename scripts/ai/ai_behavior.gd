@@ -28,7 +28,7 @@ func decide(unit: Unit, grid: Grid, units: Dictionary) -> Decision:
 	var best := Decision.new(unit.cell, null)
 	var best_score := -INF
 
-	for cell in grid.get_reachable_cells(unit.cell, unit.move_range, unit.can_fly):
+	for cell in grid.get_reachable_cells(unit.cell, unit.move_range, unit.can_fly, unit.can_pass_units):
 		var wait_score := _score_position(cell, dist_map)
 
 		if wait_score > best_score:

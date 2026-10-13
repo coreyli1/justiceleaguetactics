@@ -1,7 +1,10 @@
-[gd_resource type="Resource" script_class="CommanderBonus" format=3 uid="uid://c7davxbga6mks"]
+[gd_resource type="Resource" script_class="GreenLanternBonus" format=3 uid="uid://c7davxbga6mks"]
 
-[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_gh6qp"]
+[ext_resource type="Script" uid="uid://clokudc7fupor" path="res://scripts/resources/commanders/green_lantern_bonus.gd" id="1_gh6qp"]
 
 [resource]
 script = ExtResource("1_gh6qp")
+display_name = "Projection Shield"
+description = "Units revive once on their turn after they die with half health"
+uses_per_battle = 1
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

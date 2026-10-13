@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="CommanderBonus" format=3 uid="uid://bwy5aflrgw1ao"]
+[gd_resource type="Resource" script_class="HawkgirlBonus" format=3 uid="uid://bwy5aflrgw1ao"]
 
-[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_peawu"]
+[ext_resource type="Script" uid="uid://pjmd1dqeyd6v" path="res://scripts/resources/commanders/hawgirl_bonus.gd" id="1_peawu"]
 
 [resource]
 script = ExtResource("1_peawu")
+cooldown_turns = 2
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

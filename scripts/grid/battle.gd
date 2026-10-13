@@ -13,6 +13,7 @@ var level_map: LevelMap
 var units: Dictionary = {}  
 var turn_manager: TurnManager
 var is_over := false
+var commanders: CommanderSystem
 
 var _next_entity_id := 0
 var _hovered: Unit = null   # the unit whose health bar is showing
@@ -39,6 +40,7 @@ func _ready() -> void:
 	camera.setup(level_map.get_size())
 
 	turn_manager = TurnManager.new(units)
+	turn_manager.turn_started.connect(_on_turn_started)
 
 	board.setup(grid)
 	cursor.setup(grid)
@@ -51,10 +53,15 @@ func _ready() -> void:
 
 
 func start_battle() -> void:
-	_apply_commander_bonuses()   
+	commanders = CommanderSystem.new(self)
+	commanders.start()   
 	player.activate()
 	turn_manager.start_phase(Unit.Team.PLAYER)
 
+func _on_turn_started(_turn_number: int) -> void:
+	for unit in units.values():
+		unit.tick_effects()
+	commanders.tick()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not is_over:
@@ -86,20 +93,7 @@ func get_squad() -> Array[CharacterState]:
 	return GameState.roster.slice(0, level_map.get_deploy_cells().size())
 
 
-func _apply_commander_bonuses() -> void:
-	var atk := 0
-	var mov := 0
-	for character in GameState.commanders:
-		var bonus := character.data.commander_bonus
-		if bonus:
-			atk += bonus.attack
-			mov += bonus.move_range
 
-	for unit in units.values():
-		if unit.team == Unit.Team.PLAYER:
-			unit.bonus_attack = atk
-			unit.bonus_move = mov
-	print("Commander bonuses: +%d ATK, +%d MOV" % [atk, mov])
 
 
 # --- Queries ----------------------------------------------------------------------
@@ -137,7 +131,7 @@ func spawn_unit(data: UnitData, cell: Vector2i, team: Unit.Team) -> Unit:
 
 
 func move_unit(unit: Unit, cell: Vector2i) -> void:
-	await move_unit_along(unit, grid.find_path(unit.cell, cell, unit.move_range, unit.can_fly))
+		await move_unit_along(unit, grid.find_path(unit.cell, cell, unit.move_range, unit.can_fly, unit.can_pass_units))
 
 
 
@@ -196,6 +190,8 @@ func resolve_attack(attacker: Unit, target: Unit) -> bool:
 # --- Internals --------------------------------------------------------------------
 
 func _kill_unit(unit: Unit) -> void:
+	if commanders and commanders.prevent_death(unit):
+		return   
 	print("%s is defeated" % unit.data.display_name)
 	_remove_unit(unit)
 

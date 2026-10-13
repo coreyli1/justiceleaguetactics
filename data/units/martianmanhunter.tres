@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://ehfgf771pcmf"]
 
+[ext_resource type="Resource" uid="uid://dlrwtvplt6arw" path="res://data/units/commander_bonuses/martianmanhunter_cbonus.tres" id="1_nfae6"]
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_y4usq"]
 [ext_resource type="Texture2D" uid="uid://dlw8ha4js12xy" path="res://art/heroes/martian manhunter.png" id="2_ss7w6"]
 
@@ -8,6 +9,7 @@ script = ExtResource("1_y4usq")
 id = &"4"
 display_name = "Martian Manhunter"
 type = 2
+commander_bonus = ExtResource("1_nfae6")
 sprite = ExtResource("2_ss7w6")
 attack_range_min = 2
 attack_range_max = 3

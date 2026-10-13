@@ -1,13 +1,14 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://bj7yhwc6hf0u2"]
 
+[ext_resource type="Resource" uid="uid://c7davxbga6mks" path="res://data/units/commander_bonuses/greenlantern_cbonus.tres" id="1_yoe2t"]
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="2_bdmra"]
-[ext_resource type="Texture2D" uid="uid://d3grn173exmrc" path="res://art/heroes/batman.png" id="3_8a7fu"]
+[ext_resource type="Texture2D" uid="uid://crvnm1i0op7mo" path="res://art/heroes/gl.png" id="3_bdmra"]
 
 [resource]
 script = ExtResource("2_bdmra")
 id = &"6"
 display_name = "Green Lantern"
-sprite = ExtResource("3_8a7fu")
-attack_range_min = 2
+commander_bonus = ExtResource("1_yoe2t")
+sprite = ExtResource("3_bdmra")
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

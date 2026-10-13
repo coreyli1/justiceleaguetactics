@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://3m1bqll1x34p"]
 
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_kfgxq"]
+[ext_resource type="Resource" uid="uid://bc4v7ciq7m77e" path="res://data/units/commander_bonuses/superman_cbonus.tres" id="1_q2u8v"]
 [ext_resource type="Texture2D" uid="uid://bdrpv34ineo7y" path="res://art/heroes/superman.png" id="2_x2xd2"]
 
 [resource]
@@ -8,6 +9,7 @@ script = ExtResource("1_kfgxq")
 id = &"1"
 display_name = "Superman"
 type = 2
+commander_bonus = ExtResource("1_q2u8v")
 sprite = ExtResource("2_x2xd2")
 attack_range_min = 2
 attack_range_max = 3

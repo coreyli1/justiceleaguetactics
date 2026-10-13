@@ -1,5 +1,7 @@
 class_name Combat extends RefCounted
 
+const STRONG := 1.5
+const WEAK := .75
 
 class Hit:
 	var attacker: Unit
@@ -13,12 +15,23 @@ class Hit:
 		damage = p_damage
 		lethal = p_lethal
 
+const BEATS := {
+	UnitData.Type.HUMAN: UnitData.Type.ALIEN,
+	UnitData.Type.ALIEN: UnitData.Type.META,
+	UnitData.Type.META: UnitData.Type.HUMAN,
+}
 
-## Damage is the attacker's attack (no defense stat). The defender is still passed in
-## so matchups (e.g. by unit type) can be added here later without changing callers.
-static func calculate_damage(attacker: Unit, _defender: Unit) -> int:
-	return maxi(1, attacker.attack)
+static func type_multiplier(attacker_type: UnitData.Type, defender_type: UnitData.Type) -> float:
+	if BEATS[attacker_type] == defender_type:
+		return STRONG
+	if BEATS[defender_type] == attacker_type:
+		return WEAK
+	return 1.0
 
+
+static func calculate_damage(attacker: Unit, defender: Unit) -> int:
+	var damage := attacker.attack * type_multiplier(attacker.type, defender.type)
+	return maxi(0, maxi(1, roundi(damage)) - defender.shield)
 
 static func in_range(unit: Unit, from: Vector2i, to: Vector2i) -> bool:
 	var dist := absi(from.x - to.x) + absi(from.y - to.y)

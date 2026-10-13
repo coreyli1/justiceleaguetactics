@@ -3,11 +3,14 @@
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_vtm4q"]
 [ext_resource type="Resource" uid="uid://ceu53t2yue5o3" path="res://data/units/batman.tres" id="2_no2dc"]
 [ext_resource type="Script" uid="uid://wsa2bq1w4tud" path="res://scripts/resources/roster_data.gd" id="2_t0mte"]
+[ext_resource type="Resource" uid="uid://o0t0p8hlxln0" path="res://data/units/wonderwoman.tres" id="3_5x4v1"]
 [ext_resource type="Resource" uid="uid://dr8wagjxqlrd3" path="res://data/units/hawkgirl.tres" id="3_etc37"]
 [ext_resource type="Resource" uid="uid://ehfgf771pcmf" path="res://data/units/martianmanhunter.tres" id="4_6f8sd"]
 [ext_resource type="Resource" uid="uid://3m1bqll1x34p" path="res://data/units/superman.tres" id="5_5x4v1"]
+[ext_resource type="Resource" uid="uid://b6iyfm1w452yp" path="res://data/units/flash.tres" id="6_rrjwv"]
+[ext_resource type="Resource" uid="uid://bj7yhwc6hf0u2" path="res://data/units/greenlantern.tres" id="7_hgpe1"]
 
 [resource]
 script = ExtResource("2_t0mte")
-heroes = Array[ExtResource("1_vtm4q")]([ExtResource("2_no2dc"), ExtResource("3_etc37"), ExtResource("4_6f8sd"), ExtResource("5_5x4v1")])
+heroes = Array[ExtResource("1_vtm4q")]([ExtResource("5_5x4v1"), ExtResource("3_5x4v1"), ExtResource("2_no2dc"), ExtResource("4_6f8sd"), ExtResource("6_rrjwv"), ExtResource("7_hgpe1"), ExtResource("3_etc37")])
 metadata/_custom_type_script = "uid://wsa2bq1w4tud"

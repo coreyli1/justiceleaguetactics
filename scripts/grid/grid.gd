@@ -44,11 +44,9 @@ func remove(cell: Vector2i) -> void:
 	_occupants.erase(cell)
 
 func set_blocked(cell: Vector2i, blocked: bool) -> void:
-	_astar.set_point_solid(cell, blocked)   # walls, water, etc. (milestone 5)
+	_astar.set_point_solid(cell, blocked)   
 	
-## Explores every cell reachable within move_range. Flyers may pass over walls,
-## so walls can appear in the result; callers that pick a destination filter them out.
-func _flood_fill(origin: Vector2i, move_range: int, can_fly: bool = false) -> Dictionary:
+func _flood_fill(origin: Vector2i, move_range: int, can_fly: bool = false, can_pass_units: bool = false) -> Dictionary:
 	var distances := {origin: 0}
 	var frontier: Array[Vector2i] = [origin]
 	var came_from := {origin: origin}
@@ -61,7 +59,7 @@ func _flood_fill(origin: Vector2i, move_range: int, can_fly: bool = false) -> Di
 				continue
 			if not is_in_bounds(next):
 				continue
-			if is_occupied(next):
+			if is_occupied(next) and not can_pass_units:
 				continue
 			if is_blocked(next) and not can_fly:
 				continue
@@ -73,21 +71,23 @@ func _flood_fill(origin: Vector2i, move_range: int, can_fly: bool = false) -> Di
 			came_from[next] = current
 	return came_from
 	
-## Cells a unit can END its move on (never a wall, even for flyers).
-func get_reachable_cells(origin: Vector2i, move_range: int, can_fly: bool = false) -> Array[Vector2i]:
-	var came_from := _flood_fill(origin, move_range, can_fly)
+func get_reachable_cells(origin: Vector2i, move_range: int, can_fly: bool = false, can_pass_units: bool = false) -> Array[Vector2i]:
+	var came_from := _flood_fill(origin, move_range, can_fly, can_pass_units)
 	var ret: Array[Vector2i] = []
 	for k in came_from.keys():
-		if not is_blocked(k):
-			ret.append(k)
+		if is_blocked(k):
+			continue
+		if k != origin and is_occupied(k):
+			continue   
+		ret.append(k)
 	return ret	
 	
 	
-func find_path(from: Vector2i, to: Vector2i, move_range: int, can_fly: bool = false) -> Array[Vector2i]:
+func find_path(from: Vector2i, to: Vector2i, move_range: int, can_fly: bool = false, can_pass_units: bool = false) -> Array[Vector2i]:
 	var path: Array[Vector2i] = []
-	if is_blocked(to):
-		return path   # nobody can stop on a wall
-	var came_from := _flood_fill(from, move_range, can_fly)
+	if is_blocked(to) or (to != from and is_occupied(to)):
+		return path   
+	var came_from := _flood_fill(from, move_range, can_fly, can_pass_units)
 	if not came_from.has(to):
 		return path
 	var current := to
@@ -119,7 +119,6 @@ func get_cells_in_range(origin: Vector2i, min_range: int, max_range: int) -> Arr
 
 	return cells
 
-## Walking distance from the nearest source to every cell. Flyers ignore walls.
 func distance_map(sources: Array[Vector2i], can_fly: bool = false) -> Dictionary:
 	var dist := {}
 	var frontier: Array[Vector2i] = []

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://dr8wagjxqlrd3"]
 
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_da0kn"]
+[ext_resource type="Resource" uid="uid://bwy5aflrgw1ao" path="res://data/units/commander_bonuses/hawkgirl_cbonus.tres" id="1_i5uip"]
 [ext_resource type="Texture2D" uid="uid://cvgmgujnu1vvl" path="res://art/heroes/hawkgirl.png" id="2_ytxf4"]
 
 [resource]
@@ -8,6 +9,7 @@ script = ExtResource("1_da0kn")
 id = &"7"
 display_name = "Hawkgirl"
 type = 2
+commander_bonus = ExtResource("1_i5uip")
 sprite = ExtResource("2_ytxf4")
 can_fly = true
 attack_range_min = 2
