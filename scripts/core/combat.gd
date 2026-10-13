@@ -14,8 +14,10 @@ class Hit:
 		lethal = p_lethal
 
 
-static func calculate_damage(attacker: Unit, defender: Unit) -> int:
-	return maxi(1, attacker.attack - defender.defense)
+## Damage is the attacker's attack (no defense stat). The defender is still passed in
+## so matchups (e.g. by unit type) can be added here later without changing callers.
+static func calculate_damage(attacker: Unit, _defender: Unit) -> int:
+	return maxi(1, attacker.attack)
 
 
 static func in_range(unit: Unit, from: Vector2i, to: Vector2i) -> bool:

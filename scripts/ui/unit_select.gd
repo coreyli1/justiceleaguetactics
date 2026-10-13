@@ -50,12 +50,11 @@ func _add_hero_row(character: CharacterState) -> void:
 func _on_hero_toggled(pressed: bool, character: CharacterState, button: Button) -> void:
 	if pressed:
 		if GameState.squad.size() >= _max_squad:
-			button.set_pressed_no_signal(false)   # squad full: undo the click
+			button.set_pressed_no_signal(false)   
 			return
 		GameState.squad.append(character)
 	else:
 		GameState.squad.erase(character)
-		# A hero who leaves the squad can't keep commanding.
 		GameState.commanders.erase(character)
 		_command_buttons[character].set_pressed_no_signal(false)
 	_refresh()
@@ -64,7 +63,7 @@ func _on_hero_toggled(pressed: bool, character: CharacterState, button: Button) 
 func _on_command_toggled(pressed: bool, character: CharacterState, button: Button) -> void:
 	if pressed:
 		if GameState.commanders.size() >= GameState.MAX_COMMANDERS:
-			button.set_pressed_no_signal(false)   # already have 2: undo the click
+			button.set_pressed_no_signal(false)  
 			return
 		GameState.commanders.append(character)
 	else:

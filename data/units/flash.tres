@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://b6iyfm1w452yp"]
+
+[ext_resource type="Texture2D" uid="uid://dxx0kq0kdx6gt" path="res://art/heroes/flash.png" id="2_36i3g"]
+[ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="2_n7xsw"]
+
+[resource]
+script = ExtResource("2_n7xsw")
+id = &"5"
+display_name = "Flash"
+type = 1
+sprite = ExtResource("2_36i3g")
+attack_range_min = 2
+attack_range_max = 3
+metadata/_custom_type_script = "uid://xam200ljteac"

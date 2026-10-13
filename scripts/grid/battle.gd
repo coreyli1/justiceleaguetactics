@@ -15,6 +15,7 @@ var turn_manager: TurnManager
 var is_over := false
 
 var _next_entity_id := 0
+var _hovered: Unit = null   # the unit whose health bar is showing
 
 @onready var camera: BattleCamera = $Camera
 @onready var board: Board = $Board
@@ -41,6 +42,7 @@ func _ready() -> void:
 
 	board.setup(grid)
 	cursor.setup(grid)
+	cursor.moved.connect(_on_cursor_moved)
 	player.setup(self, action_menu, cursor, end_turn_button)
 	enemies.setup(self)
 	deployment.setup(self, cursor, deploy_panel)
@@ -86,21 +88,18 @@ func get_squad() -> Array[CharacterState]:
 
 func _apply_commander_bonuses() -> void:
 	var atk := 0
-	var def := 0
 	var mov := 0
 	for character in GameState.commanders:
 		var bonus := character.data.commander_bonus
 		if bonus:
 			atk += bonus.attack
-			def += bonus.defense
 			mov += bonus.move_range
 
 	for unit in units.values():
 		if unit.team == Unit.Team.PLAYER:
 			unit.bonus_attack = atk
-			unit.bonus_defense = def
 			unit.bonus_move = mov
-	print("Commander bonuses: +%d ATK, +%d DEF, +%d MOV" % [atk, def, mov])
+	print("Commander bonuses: +%d ATK, +%d MOV" % [atk, mov])
 
 
 # --- Queries ----------------------------------------------------------------------
@@ -138,7 +137,7 @@ func spawn_unit(data: UnitData, cell: Vector2i, team: Unit.Team) -> Unit:
 
 
 func move_unit(unit: Unit, cell: Vector2i) -> void:
-	await move_unit_along(unit, grid.find_path(unit.cell, cell, unit.move_range))
+	await move_unit_along(unit, grid.find_path(unit.cell, cell, unit.move_range, unit.can_fly))
 
 
 
@@ -226,3 +225,17 @@ func _end_battle(outcome: Outcome) -> void:
 	result_label.text = headline + "\nR: retry   Enter: continue"
 	result_label.show()
 	battle_ended.emit(outcome)
+
+
+# --- Hover ------------------------------------------------------------------------
+
+## Shows the health bar of whichever unit the cursor is on, and hides the last one.
+func _on_cursor_moved(cell: Vector2i) -> void:
+	var unit := get_unit_at(cell)
+	if unit == _hovered:
+		return
+	if is_instance_valid(_hovered):   # it may have died since we last hovered it
+		_hovered.show_hp(false)
+	_hovered = unit
+	if _hovered:
+		_hovered.show_hp(true)

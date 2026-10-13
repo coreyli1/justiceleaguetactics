@@ -12,8 +12,8 @@ enum Type {HUMAN, META, ALIEN}
 @export_group("Stats")
 @export var max_hp: int = 10
 @export var attack: int = 3
-@export var defense: int = 1
 @export var move_range: int = 3
+@export var can_fly: bool = false
 
 @export_group("Attack Range")
 @export var attack_range_min: int = 1   

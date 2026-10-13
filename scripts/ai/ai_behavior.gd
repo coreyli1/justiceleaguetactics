@@ -23,12 +23,12 @@ func decide(unit: Unit, grid: Grid, units: Dictionary) -> Decision:
 	for other in units.values():
 		if other.team != unit.team:
 			enemy_cells.append(other.cell)
-	var dist_map := grid.distance_map(enemy_cells)
+	var dist_map := grid.distance_map(enemy_cells, unit.can_fly)
 
 	var best := Decision.new(unit.cell, null)
 	var best_score := -INF
 
-	for cell in grid.get_reachable_cells(unit.cell, unit.move_range):
+	for cell in grid.get_reachable_cells(unit.cell, unit.move_range, unit.can_fly):
 		var wait_score := _score_position(cell, dist_map)
 
 		if wait_score > best_score:

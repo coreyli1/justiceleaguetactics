@@ -4,25 +4,30 @@ enum Team { PLAYER, ENEMY }
 
 var data: UnitData
 var team: Team
-var hp: int
+## Setting hp redraws the health bar, so it's always current.
+var hp: int:
+	set(value):
+		hp = value
+		var bar := get_node_or_null("HpBar") as CanvasItem
+		if bar:
+			bar.queue_redraw()
 var has_acted: bool
 var character: CharacterState
 
 var bonus_attack := 0
-var bonus_defense := 0
 var bonus_move := 0
 
 var attack: int:
 	get:
 		return data.attack + bonus_attack
 
-var defense: int:
-	get:
-		return data.defense + bonus_defense
-
 var move_range: int:
 	get:
 		return data.move_range + bonus_move
+
+var can_fly: bool:
+	get:
+		return data.can_fly
 
 
 
@@ -34,6 +39,11 @@ func setup(p_data: UnitData, p_team: Team) -> void:
 	hp = data.max_hp
 	
 	update_visual()
+
+## Shows or hides the health bar (used when the cursor hovers this unit).
+func show_hp(value: bool) -> void:
+	$HpBar.visible = value
+
 
 func update_visual() -> void:
 	modulate = Color.WHITE   

@@ -5,9 +5,10 @@
 
 [resource]
 script = ExtResource("1_y4usq")
+id = &"4"
 display_name = "Martian Manhunter"
+type = 2
 sprite = ExtResource("2_ss7w6")
-max_hp = 1
 attack_range_min = 2
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CommanderBonus" format=3 uid="uid://c7davxbga6mks"]
+
+[ext_resource type="Script" uid="uid://ck6cne0g4ob8u" path="res://scripts/resources/commander_bonus.gd" id="1_gh6qp"]
+
+[resource]
+script = ExtResource("1_gh6qp")
+metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

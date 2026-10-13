@@ -98,7 +98,7 @@ func _confirm_targeting(cell: Vector2i) -> void:
 
 func _select(unit: Unit) -> void:
 	_selected = unit
-	_reachable = _battle.grid.get_reachable_cells(unit.cell, unit.move_range)
+	_reachable = _battle.grid.get_reachable_cells(unit.cell, unit.move_range, unit.can_fly)
 	_attack_cells.clear()
 	_battle.board.show_moves(_reachable)
 	_cursor.move_to(unit.cell)
@@ -127,7 +127,7 @@ func _update_path(cell: Vector2i) -> void:
 	elif _is_neighbor(_path.back(), cell) and _path.size() - 1 < _selected.move_range:
 		_path.append(cell)       
 	else:
-		_path = _battle.grid.find_path(_selected.cell, cell, _selected.move_range)
+		_path = _battle.grid.find_path(_selected.cell, cell, _selected.move_range, _selected.can_fly)
 
 	_battle.board.show_path(_path)
 

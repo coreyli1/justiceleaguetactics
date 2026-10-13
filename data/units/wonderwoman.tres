@@ -7,6 +7,7 @@
 script = ExtResource("1_he4uv")
 id = &"3"
 display_name = "Wonder Woman"
+type = 1
 sprite = ExtResource("2_yv8jn")
 attack_range_min = 2
 attack_range_max = 3
