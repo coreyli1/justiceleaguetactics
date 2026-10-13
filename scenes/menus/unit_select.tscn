@@ -23,11 +23,10 @@ text = "Select Your Heroes"
 
 [node name="HeroList" type="GridContainer" parent="VBox" unique_id=817259867]
 layout_mode = 2
-columns = 2
+columns = 4
 
-[node name="Title" type="Label" parent="VBox/HeroList" unique_id=496939251]
+[node name="Details" type="Label" parent="VBox" unique_id=1782722032]
 layout_mode = 2
-text = "Justice League Tactics"
 
 [node name="Count" type="Label" parent="VBox" unique_id=1407740750]
 layout_mode = 2
