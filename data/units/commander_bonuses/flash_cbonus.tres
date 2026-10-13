@@ -5,5 +5,6 @@
 [resource]
 script = ExtResource("1_h0ar5")
 display_name = "Speed Force"
+description = "Once per turn, you may increase a unit's movement by  3"
 uses_per_battle = 1
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

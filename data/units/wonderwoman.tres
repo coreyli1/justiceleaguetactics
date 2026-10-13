@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="UnitData" format=3 uid="uid://o0t0p8hlxln0"]
 
+[ext_resource type="Resource" uid="uid://cmh1eq511tqil" path="res://data/units/commander_bonuses/wonderwoman_cbonus.tres" id="1_e421p"]
 [ext_resource type="Script" uid="uid://xam200ljteac" path="res://scripts/resources/unit_data.gd" id="1_he4uv"]
 [ext_resource type="Texture2D" uid="uid://cxwms408gmmih" path="res://art/heroes/wonder woman.png" id="2_yv8jn"]
 
@@ -8,6 +9,7 @@ script = ExtResource("1_he4uv")
 id = &"3"
 display_name = "Wonder Woman"
 type = 1
+commander_bonus = ExtResource("1_e421p")
 sprite = ExtResource("2_yv8jn")
 attack_range_min = 2
 attack_range_max = 3

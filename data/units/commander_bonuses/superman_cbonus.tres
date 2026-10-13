@@ -4,4 +4,9 @@
 
 [resource]
 script = ExtResource("1_tttj4")
+display_name = "Son of Krypton"
+description = "Increase all stats."
+attack = 2
+move_range = 1
+max_hp = 2
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

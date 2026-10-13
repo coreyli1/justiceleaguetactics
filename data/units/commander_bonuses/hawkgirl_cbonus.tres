@@ -4,5 +4,7 @@
 
 [resource]
 script = ExtResource("1_peawu")
+display_name = "Flight"
+description = "Every 2 turns, you may pass through anything."
 cooldown_turns = 2
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

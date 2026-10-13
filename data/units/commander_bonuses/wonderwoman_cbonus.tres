@@ -4,4 +4,7 @@
 
 [resource]
 script = ExtResource("1_s44qc")
+display_name = "Wonder Woman's Gauntlets"
+description = "Protect yourself from 1 instance of damage. Shield lasts 1 turn."
+uses_per_battle = 1
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

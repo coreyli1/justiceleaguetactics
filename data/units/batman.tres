@@ -6,7 +6,9 @@
 
 [sub_resource type="Resource" id="Resource_0pvli"]
 script = ExtResource("1_0pvli")
-attack = 2
+display_name = "Alfred's Help"
+description = "Once per battle, you may move again after you finish your move."
+uses_per_battle = 1
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"
 
 [resource]

@@ -4,5 +4,7 @@
 
 [resource]
 script = ExtResource("1_g2n2t")
+display_name = "Shapeshift"
+description = "Twice a battle, you may change your type to another type. 2 uses per battle."
 uses_per_battle = 2
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"

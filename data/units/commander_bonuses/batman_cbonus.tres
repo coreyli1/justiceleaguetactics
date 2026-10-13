@@ -4,5 +4,7 @@
 
 [resource]
 script = ExtResource("1_cpetd")
+display_name = "Alfred's Help"
+description = "Once per battle, you may move again"
 uses_per_battle = 1
 metadata/_custom_type_script = "uid://ck6cne0g4ob8u"
