@@ -12,5 +12,5 @@ type = 2
 commander_bonus = ExtResource("1_nfae6")
 sprite = ExtResource("2_ss7w6")
 attack_range_min = 2
-attack_range_max = 3
+attack_range_max = 4
 metadata/_custom_type_script = "uid://xam200ljteac"

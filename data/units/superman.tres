@@ -11,6 +11,4 @@ display_name = "Superman"
 type = 2
 commander_bonus = ExtResource("1_q2u8v")
 sprite = ExtResource("2_x2xd2")
-attack_range_min = 2
-attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

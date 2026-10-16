@@ -11,6 +11,6 @@ display_name = "Flash"
 type = 1
 commander_bonus = ExtResource("1_vpfea")
 sprite = ExtResource("2_36i3g")
-attack_range_min = 2
+move_range = 5
 attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

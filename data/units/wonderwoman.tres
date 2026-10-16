@@ -11,6 +11,5 @@ display_name = "Wonder Woman"
 type = 1
 commander_bonus = ExtResource("1_e421p")
 sprite = ExtResource("2_yv8jn")
-attack_range_min = 2
-attack_range_max = 3
+move_range = 4
 metadata/_custom_type_script = "uid://xam200ljteac"

@@ -1,5 +1,9 @@
 class_name Unit extends GridEntity
 
+const HIT_FLASH_AMOUNT := 0.5  
+const HIT_FLASH_TIME := 0.1    
+var _flash_tween: Tween
+
 enum Team { PLAYER, ENEMY }
 
 var data: UnitData
@@ -113,3 +117,11 @@ func move_along(path: Array[Vector2i], grid: Grid) -> Tween:
 	for step in path.slice(1):
 		tween.tween_property(self, "position", grid.cell_to_world(step), 0.12)
 	return tween
+
+func flash_hit() -> void:
+	var sprite: Sprite2D = $Sprite2D
+	if _flash_tween:
+		_flash_tween.kill()   # a new hit restarts the flash instead of fighting the old one
+	sprite.modulate = Color.WHITE.darkened(HIT_FLASH_AMOUNT)
+	_flash_tween = create_tween()
+	_flash_tween.tween_property(sprite, "modulate", Color.WHITE, HIT_FLASH_TIME)

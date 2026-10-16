@@ -48,16 +48,8 @@ static func targets_from(unit: Unit, from_cell: Vector2i, grid: Grid, units: Dic
 
 
 
-static func resolve_attack(attacker: Unit, defender: Unit, attacker_cell: Vector2i) -> Array[Hit]:
+static func resolve_attack(attacker: Unit, defender: Unit, _attacker_cell: Vector2i) -> Array[Hit]:
 	var hits: Array[Hit] = []
-
-	var dmg := calculate_damage(attacker, defender)
-	var defender_hp := defender.hp - dmg
-	hits.append(Hit.new(attacker, defender, dmg, defender_hp <= 0))
-
-	if defender_hp > 0 and in_range(defender, defender.cell, attacker_cell):
-		var counter_dmg := calculate_damage(defender, attacker)
-		var attacker_hp := attacker.hp - counter_dmg
-		hits.append(Hit.new(defender, attacker, counter_dmg, attacker_hp <= 0))
-
+	var damage := calculate_damage(attacker, defender)
+	hits.append(Hit.new(attacker, defender, damage, defender.hp - damage <= 0))
 	return hits

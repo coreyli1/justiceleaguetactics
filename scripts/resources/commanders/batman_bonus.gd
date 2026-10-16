@@ -1,6 +1,4 @@
 class_name BatmanBonus extends CommanderBonus
-## Once per battle: after you end this turn, take another player turn
-## before the enemy moves. All heroes can act again.
 
 func _init() -> void:
 	uses_per_battle = 1

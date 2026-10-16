@@ -19,6 +19,15 @@ func start() -> void:
 	for state in states:
 		state.deployed = _battle.get_unit_for(state.character) != null
 		state.bonus.on_battle_start(_battle)
+	
+	for state in states:
+		print("%s | bonus script: %s | activated: %s | deployed: %s | ready: %s" % [
+			state.character.data.display_name,
+			state.bonus.get_script().resource_path.get_file(),
+			state.bonus.is_activated(),
+			state.deployed,
+			state.is_ready(),
+		])
 
 
 ## Commanders that show up in the Commander menu.

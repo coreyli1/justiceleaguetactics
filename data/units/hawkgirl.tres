@@ -12,6 +12,4 @@ type = 2
 commander_bonus = ExtResource("1_i5uip")
 sprite = ExtResource("2_ytxf4")
 can_fly = true
-attack_range_min = 2
-attack_range_max = 3
 metadata/_custom_type_script = "uid://xam200ljteac"

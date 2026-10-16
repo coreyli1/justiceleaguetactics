@@ -176,6 +176,7 @@ func resolve_attack(attacker: Unit, target: Unit) -> bool:
 	var hits := Combat.resolve_attack(attacker, target, attacker.cell)
 	for hit in hits:
 		hit.defender.hp -= hit.damage
+		hit.defender.flash_hit()
 		print("%s hits %s for %d (%d HP left)" % [hit.attacker.data.display_name, hit.defender.data.display_name, hit.damage, hit.defender.hp])
 		if hit.defender.hp <= 0:
 			_kill_unit(hit.defender)
