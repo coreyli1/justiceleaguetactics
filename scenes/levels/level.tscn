@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://b5afj80j383yo" path="res://scripts/levels/level_map.gd" id="1_2djvx"]
 [ext_resource type="TileSet" uid="uid://dbysrcv2jxjo6" path="res://data/levels/tiles.tres" id="2_uvc87"]
 [ext_resource type="PackedScene" uid="uid://0a0lpgwy35xd" path="res://scenes/levels/enemy_spawn.tscn" id="3_qdh5e"]
-[ext_resource type="Resource" uid="uid://ccf43kkdsnayc" path="res://data/units/enemies/imperium.tres" id="4_uvc87"]
 
 [node name="Level" type="Node2D" unique_id=14238417]
 script = ExtResource("1_2djvx")
@@ -19,9 +18,7 @@ tile_set = ExtResource("2_uvc87")
 [node name="Enemies" type="Node2D" parent="." unique_id=137085501]
 
 [node name="EnemySpawn2" parent="Enemies" unique_id=776261832 instance=ExtResource("3_qdh5e")]
-position = Vector2(76, 0)
-unit = ExtResource("4_uvc87")
+position = Vector2(80, 0)
 
 [node name="EnemySpawn" parent="Enemies" unique_id=1395691054 instance=ExtResource("3_qdh5e")]
-position = Vector2(76, 16)
-unit = ExtResource("4_uvc87")
+position = Vector2(80, 16)

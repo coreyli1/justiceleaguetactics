@@ -1,5 +1,5 @@
 @tool
-class_name EnemySpawn extends Node2D
+class_name EnemySpawn extends Sprite2D
 
 @export var unit: UnitData:
 	set(value):
